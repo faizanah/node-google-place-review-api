@@ -94,7 +94,6 @@ module.exports = function(sequelize, DataTypes) {
         resetTokenExpireAt: Date.now() + 3600000,
         resetTokenSentAt: Date.now()
       }).then(function (result) {
-        console.log('Password: ' + JSON.stringify(result, null, 2))
         const options = {
           to: result.email,
           subject: 'Reset Password Instructions ✔',
@@ -104,15 +103,6 @@ module.exports = function(sequelize, DataTypes) {
             user: result
           }
         }
-        // const options = {
-        //   to: result.email,
-        //   subject: 'Reset Password Instructions ✔',
-        //   text: 'Please click on the link to reset your password ',
-        //   html: '<b>You are receiving this because you (or someone else) have requested the reset of the password for your account.' +
-        //   'Please click on the following link </b>' +
-        //   '<a href=http://localhost:3000/passwords/reset/' + result.resetToken + '> Click me!. </a>' +
-        //   'If you did not request this, please ignore this email and your password will remain unchanged.'
-        // }
         return mailer.send(options)
       }).catch(function (error) {
         console.log(JSON.stringify(error, null, 2))
