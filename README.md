@@ -41,7 +41,7 @@ Make sure you have [Node.js][3] and the [Mysql] installed.
 Install the dependencies and devDependencies and start the server.
 
 ```sh
-git clone git@git.virtualforce.io:umer.asif/imfo_api.git # or clone your own fork
+git clone git@git.virtualforce.io:profiles/imfo-api.git # or clone your own fork
 cd imfo_api
 npm install # To install NodeJS dependencies.
 ```
@@ -210,7 +210,7 @@ npm run prettify
 - [ ] Add public pages
 #### Support [Virtualforce INC][7]
 
-[![](https://www.virtualforce.io/wp-content/themes/vf/images/vf-logo.svg)](http://www.engintechnologies.com)
+[![](https://www.virtualforce.io/wp-content/themes/vf/images/vf-logo.svg)](https://www.virtualforce.io)
 
 
 
