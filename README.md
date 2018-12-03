@@ -41,8 +41,8 @@ Make sure you have [Node.js][3] and the [Mysql] installed.
 Install the dependencies and devDependencies and start the server.
 
 ```sh
-git clone https://github.com/faizanah/TypeScript-Express-Sequelize.git # or clone your own fork
-cd TypeScript-Express-Sequelize
+git clone git@git.virtualforce.io:umer.asif/imfo_api.git # or clone your own fork
+cd imfo_api
 npm install # To install NodeJS dependencies.
 ```
 
