@@ -1,5 +1,5 @@
 import * as winston from 'winston'
-import {UsersController, RegistrationController, SessionController} from '../controllers'
+import {UsersController, RegistrationController, SessionController, PasswordController} from '../controllers'
 import { verifyJWT_MW } from '../config/middlewares'
 
 export function initRoutes(app, router) {
@@ -8,9 +8,11 @@ export function initRoutes(app, router) {
   const users = new UsersController()
   const registration = new RegistrationController()
   const session = new SessionController()
+  const password = new PasswordController()
   apiRoute.get('/', (req, res) => res.status(200).send({message: 'Api Server is running!'}))
   apiRoute.post('/v1/login', session.login)
   apiRoute.post('/v1/signup/', registration.signup)
+  apiRoute.post('/v1/password/reset', password.create)
 
   apiRoute.route('*').all(verifyJWT_MW)
 

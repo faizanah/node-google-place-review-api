@@ -1,6 +1,8 @@
 import {createJWToken} from '../config/auth'
+import { Mailer, environment } from '../config/'
 import * as bcrypt from 'bcrypt'
-require('dotenv').config()
+import * as crypto from 'crypto'
+const mailer = new Mailer()
 module.exports = function(sequelize, DataTypes) {
   const User = sequelize.define('User', {
     id: {
@@ -9,11 +11,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV1,
       primaryKey: true
     },
-    firstName: {
-      allowNull: false,
-      type: DataTypes.STRING
-    },
-    lastName: {
+    fullName: {
       allowNull: false,
       type: DataTypes.STRING
     },
@@ -83,9 +81,43 @@ module.exports = function(sequelize, DataTypes) {
       user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null)
     }
   })
+
   User.prototype.generateToken = function generateToken() {
-    console.log('JWT:' + process.env.SECRET)
     return createJWToken({ email: this.email, id: this.id})
+  }
+
+  User.prototype.sendResetPasswordInstructions = function sendResetPasswordInstructions() {
+    const user = this
+    crypto.randomBytes(20, function (err, buf) {
+      user.updateAttributes({
+        resetToken: buf.toString('hex'),
+        resetTokenExpireAt: Date.now() + 3600000,
+        resetTokenSentAt: Date.now()
+      }).then(function (result) {
+        console.log('Password: ' + JSON.stringify(result, null, 2))
+        const options = {
+          to: result.email,
+          subject: 'Reset Password Instructions ✔',
+          template: 'forgot-password-email',
+          context: {
+            url: `${environment.host}/password/reset/` + result.resetToken,
+            user: result
+          }
+        }
+        // const options = {
+        //   to: result.email,
+        //   subject: 'Reset Password Instructions ✔',
+        //   text: 'Please click on the link to reset your password ',
+        //   html: '<b>You are receiving this because you (or someone else) have requested the reset of the password for your account.' +
+        //   'Please click on the following link </b>' +
+        //   '<a href=http://localhost:3000/passwords/reset/' + result.resetToken + '> Click me!. </a>' +
+        //   'If you did not request this, please ignore this email and your password will remain unchanged.'
+        // }
+        return mailer.send(options)
+      }).catch(function (error) {
+        console.log(JSON.stringify(error, null, 2))
+      })
+    })
   }
 
   User.prototype.authenticate = function authenticate(value) {

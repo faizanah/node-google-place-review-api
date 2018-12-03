@@ -2,8 +2,9 @@ import ApplicationController from './application.controller'
 import { UsersController } from './users.controller'
 import { RegistrationController } from './registration.controller'
 import { SessionController } from './session.controller'
+import { PasswordController } from './password.controller'
 
-export {ApplicationController, UsersController, RegistrationController, SessionController}
+export {ApplicationController, UsersController, RegistrationController, SessionController, PasswordController}
 
 // var fs = require('fs');
 // function getUrl(url) {
