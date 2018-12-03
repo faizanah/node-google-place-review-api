@@ -116,8 +116,7 @@ Restful API Flow
 Post request to `api.example.com/v1/signup/`
 ```
 {
-	"firstName": "Faizan",
-	"lastName": "Ahmad",
+	"fullName": "Faizan AH",
 	"email": "faizan.ahmad@virtualforce.io",
 	"password": "password"
 }
@@ -129,8 +128,7 @@ Response
     "success": true,
 	"data":{
 	    "id": '3f5614a0-f4a4-11e8-b6b7-771eeb9fc014',
-	    "firstName": "Faizan",
-	    "lastName": "Ahmad",
+	    "fullName": "Faizan AH",
 	    "password": "$2a$10$Ze9c2PFdo6DbYtpyJyZJNutymqI71uhOJkkp5ROcPM.ynbG0dyO",
 	    "email": "faizan.ahmad@virtualforce.io",
 	    "createdAt": "2018-11-30T07:46:19.173Z",
@@ -157,8 +155,7 @@ Response
     "success": true,
     "data": {
         "id": 4,
-        "firstName": "Faizan",
-        "lastName": "Ahmad",
+         "fullName": "Faizan AH",
         "password": "$2a$10$eKcnjg6J.UdXzO/mwKlfzu.eIp391EDiXEBlO5cHiVAW2IT3Nq",
         "email": "faizan.ahmad@virtualforce.io",
         "createdAt": "2018-11-28T14:16:01.983Z",
