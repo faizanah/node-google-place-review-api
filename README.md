@@ -111,9 +111,21 @@ npm start
 ```
 Restful API Flow
 --------------------
+##### Base URL:  `https://api-imfo.herokuapp.com`
+### Endpoints
+
+
+
+| Method 			| URI Pattern                 |
+| ------------------| --------------------------- |
+| `POST`		    | 	/v1/login           |
+| `POST`		    | 	/v1/signup               |
+| `POST`		    | 	/v1/password/reset          |
+
+
 #### Signup
 
-Post request to `api.example.com/v1/signup/`
+Post request to `/v1/signup/`
 ```
 {
 	"fullName": "Faizan AH",
@@ -141,7 +153,7 @@ Response
 #### Login
 Using your account credentials you need to create a session to receive a token to authenticate all other API calls.
 
-Post request to`api.example.com/v1/login/`
+Post request to`/v1/login/`
 ```
 {
 	"email": "faizan.ahmad@virtualforce.io",
@@ -222,3 +234,4 @@ npm run prettify
   [6]: https://www.getpostman.com/docs/postman/launching_postman/navigating_postman
   [9]: https://en.wikipedia.org/wiki/Object-relational_mapping
   [7]: https://www.virtualforce.io
+  [8]: https://api-imfo.herokuapp.com
