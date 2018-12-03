@@ -7,10 +7,7 @@ module.exports = {
           defaultValue: Sequelize.UUIDV1,
           primaryKey: true
         },
-        firstName: {
-          type: Sequelize.STRING(64)
-        },
-        lastName: {
+        fullName: {
           type: Sequelize.STRING(64)
         },
         email: {
