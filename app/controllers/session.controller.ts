@@ -9,11 +9,12 @@ export class SessionController extends ApplicationController {
     req.condition = { where: { email: req.body.email } }
     return super._findOne(req, res, data => {
       if (data && data.authenticate(req.body.password)) {
-        res.setHeader('x-access-token', data.generateToken())
+        const token = data.generateToken()
+        res.setHeader('x-access-token', token)
         return res.status(200).send({
           success: true,
           data: data,
-          token: data.generateToken(),
+          token: token,
           message: 'Congrats! You have Successfully login'
         })
       }
