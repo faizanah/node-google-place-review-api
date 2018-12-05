@@ -13,11 +13,13 @@
 	- [Endpoints]
 - [Contributing]
 ##
+
 ## Tech
 * [node.js] - evented I/O for the backend
 * [Express] - fast node.js network app framework.
 * [Mysql] - Sequelize is a promise-based ORM for Node.js
 * [Sequelize] -  In addition, we're going to use Sequelize, which is a database [ORM][9] that will interface with the **MySQL**, **PostgreSQL**, **SQLite**, and **MariaDB** databases for us.
+
 ## Introduction
 
 Our app directory consists on the following folders
@@ -65,13 +67,24 @@ Export environment variables through terninals
 * export DATABASE_URL="mysql://username:password@host:3306/database"
 * export SECRET="My Secret 64bit"
 * export NODE_ENV=production
-* export PORT=3000
+* export HOST=https://www.imfo.com
+* export MAILER_FROM=Sendgrid
+* export MAILER_USER=Sendgrid Username
+* export MAILER_PASSWORD=Sendgrid password
+* export FACEBOOK_APP_ID=Facebook App ID
+* export FACEBOOK_APP_SECRET=Facebook App SECRET
 ```
 Or rename the `/env.example` to `.env` update the values file for your environment
 ```
 DATABASE_URL=mysql://username:password@host:3306/database
 NODE_ENV=development
 SECRET=1234zxcv
+HOST=https://www.imfo.com
+MAILER_FROM=Sendgrid
+MAILER_USER=Sendgrid Username
+MAILER_PASSWORD=Sendgrid password
+FACEBOOK_APP_ID=Facebook App ID
+FACEBOOK_APP_SECRET=Facebook App SECRET
 ```
 
 The **server/config/environment.ts** file contain our application environment variables, such as database authentication configuration, secret etc. ..
@@ -85,17 +98,55 @@ module.exports = {
    development: {
      DATABASE_URL: 'Test DB Connection String',
      secret: 'Development Secret',
-     port: 3000
+     port: 3000,
+     mailer: {
+      from: process.env.MAILER_FROM,
+      service: process.env.MAILER_SERVICE || 'SendGrid',
+      smtp: {
+        user: process.env.MAILER_USER,
+        password: process.env.MAILER_PASSWORD
+      }
+    },
+    facebookAuth: {
+       clientID: process.env.FACEBOOK_APP_ID,
+       clientSecret:  process.env.FACEBOOK_APP_SECRET
+    }
    },
    test: {
      DATABASE_URL: 'Test DB Connection String',
      secret: 'Testing Secret',
-     port: 3000
+     port: 3000,
+      host: process.env.HOST,
+      mailer: {
+         from: process.env.MAILER_FROM,
+         service: process.env.MAILER_SERVICE || 'SendGrid',
+         smtp: {
+           user: process.env.MAILER_USER,
+           password: process.env.MAILER_PASSWORD
+         }
+      },
+      facebookAuth: {
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret:  process.env.FACEBOOK_APP_SECRET
+      }
    },
    production: {
      DATABASE_URL: process.env.DATABASE_URL,
      secret: process.env.SECRET,
-     port: process.env.PORT || 3000
+     port: process.env.PORT || 3000,
+     host: process.env.HOST,
+     mailer: {
+        from: process.env.MAILER_FROM,
+        service: process.env.MAILER_SERVICE || 'SendGrid',
+        smtp: {
+          user: process.env.MAILER_USER,
+          password: process.env.MAILER_PASSWORD
+        }
+     },
+     facebookAuth: {
+       clientID: process.env.FACEBOOK_APP_ID,
+       clientSecret:  process.env.FACEBOOK_APP_SECRET
+     }
    }
  }
 ```
@@ -121,6 +172,7 @@ Restful API Flow
 | `POST`		    | 	/v1/login           |
 | `POST`		    | 	/v1/signup               |
 | `POST`		    | 	/v1/password/reset          |
+| `POST`		    | 	/v1/auth/facebook          |
 
 
 #### Signup
@@ -137,7 +189,7 @@ Post request to `/v1/signup/`
 Response
 ```
 {
-    "success": true,
+  "success": true,
 	"data":{
 	    "id": '3f5614a0-f4a4-11e8-b6b7-771eeb9fc014',
 	    "fullName": "Faizan AH",
@@ -166,14 +218,44 @@ Response
 {
     "success": true,
     "data": {
-        "id": 4,
-         "fullName": "Faizan AH",
-        "password": "$2a$10$eKcnjg6J.UdXzO/mwKlfzu.eIp391EDiXEBlO5cHiVAW2IT3Nq",
-        "email": "faizan.ahmad@virtualforce.io",
-        "createdAt": "2018-11-28T14:16:01.983Z",
-        "updatedAt": "2018-11-28T14:16:01.983Z"
+        "id": "bee3b2e0-f891-11e8-b8c1-933c34245602",
+        "fullName": "Faizan Ahmad",
+        "avatar": null,
+        "phone": null,
+        "email": "faizan.ahmad@virualfore.io",
+        "createdAt": "2018-12-05T13:29:09.000Z",
+        "updatedAt": "2018-12-05T13:29:09.000Z"
     },
     "message": "Congrats! You have successfully login.",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhaXphbkBlbmdpbmV0ZWNoLmlvIidsZLyeicvlVN7eWnLuMuOi5E5y-_TYY"
+}
+```
+
+#### Login with Facebook
+Using your account credentials you need to create a session to receive a token to authenticate all other API calls.
+
+Post request to`/v1/auth/login/`
+```
+{
+	"email": "faizan.ahmad@virtualforce.io",
+	"access_token": "Facebook Access Token"
+}
+```
+
+Response
+```
+{
+    "success": true,
+    "data": {
+        "id": "bee3b2e0-f891-11e8-b8c1-933c34245602",
+        "fullName": "Faizan Ahmad",
+        "avatar": null,
+        "phone": null,
+        "email": "faizan.ahmad@virualfore.io",
+        "createdAt": "2018-12-05T13:29:09.000Z",
+        "updatedAt": "2018-12-05T13:29:09.000Z"
+    },
+    "message": "Congratulations! Your account has been successfully authorized with facebook.",
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImZhaXphbkBlbmdpbmV0ZWNoLmlvIidsZLyeicvlVN7eWnLuMuOi5E5y-_TYY"
 }
 ```
