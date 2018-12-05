@@ -1,6 +1,7 @@
 import * as winston from 'winston'
 import {UsersController, RegistrationController, SessionController, PasswordController} from '../controllers'
 import { verifyJWT_MW } from '../config/middlewares'
+const passportConf = require('../config/passport')
 
 export function initRoutes(app, router) {
   winston.log('info', '--> Initialisations des routes')
@@ -13,9 +14,8 @@ export function initRoutes(app, router) {
   apiRoute.post('/v1/login', session.login)
   apiRoute.post('/v1/signup/', registration.signup)
   apiRoute.post('/v1/password/reset', password.create)
-
+  apiRoute.route('/v1/auth/facebook').post(session.facebook)
   apiRoute.route('*').all(verifyJWT_MW)
-
   apiRoute.get('/v1/users/',  users.list)
   return apiRoute
 }

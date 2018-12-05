@@ -60,11 +60,11 @@ module.exports = function(sequelize, DataTypes) {
       status: {
         allowNull: false,
         type:   DataTypes.ENUM,
-        values: ['pending' , 'accepted'],
+        values: ['pending' , 'active'],
         defaultValue: 'pending',
         validate: {
           isIn: {
-            args: [['pending' , 'accepted']],
+            args: [['pending' , 'active']],
             msg: 'Invalid status.'
           }
         }

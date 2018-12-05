@@ -40,6 +40,19 @@ class ApplicationController {
         }
       })
   }
+  _findOrCreate(req, res, options = {}, callback = null) {
+    req.getValidationResult().then(function(result) {
+      if (result.isEmpty()) {
+        return db[model].findOrCreate(req.condition || {}).spread((data, created) => {
+          if (typeof(callback) === 'function')
+            callback(data, created)
+          else
+            res.status(200).send({success: true, data: data, message: created ? 'Successfully Created' : 'Successfully Reterived'})
+        }).catch(error => res.boom.badRequest(error))
+      }else {}
+        res.boom.badRequest('Validation errors', result.mapped())
+    })
+  }
   // _create(req, res, options = {}, callback = null) {
   //   let errors
   //   console.log(JSON.stringify(_.cloneDeep(req.body), null, 2))

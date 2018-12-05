@@ -5,12 +5,16 @@ module.exports = {
      secret:  process.env.SECRET,
      port: 3000,
      mailer: {
-       from: '"IMFO" <no-reply@imfo.com>',
-       service: 'SendGrid',
+       from: process.env.MAILER_FROM,
+       service: process.env.MAILER_SERVICE || 'SendGrid',
        smtp: {
-         user: 'Your Sendgrid Username',
-         password: 'Your Sendgrid Password'
+         user: process.env.MAILER_USER,
+         password: process.env.MAILER_PASSWORD
        }
+     },
+     facebookAuth: {
+       clientID: process.env.FACEBOOK_APP_ID,
+       clientSecret:  process.env.FACEBOOK_APP_SECRET,
      },
      host: 'http://localhost:3000'
    },
@@ -31,6 +35,9 @@ module.exports = {
          user: process.env.MAILER_USER,
          password: process.env.MAILER_PASSWORD
        }
+     }, facebookAuth: {
+       clientID: process.env.FACEBOOK_APP_ID,
+       clientSecret:  process.env.FACEBOOK_APP_SECRET,
      }
    }
  }
