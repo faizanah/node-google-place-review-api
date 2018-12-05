@@ -35,11 +35,11 @@
     ]
   },
   "dependencies": {
-    "crypto": "^1.0.1",
     "bcrypt": "^3.0.2",
     "body-parser": "~1.17.0",
     "cors": "~2.8.1",
     "cross-env": "~3.2.3",
+    "crypto": "^1.0.1",
     "dotenv": "^6.1.0",
     "express": "~4.15.0",
     "express-boom": "~2.0.0",
@@ -66,6 +66,8 @@
     "mysql2": "^1.6.4",
     "nodemailer": "^4.7.0",
     "nodemailer-express-handlebars": "^3.0.0",
+    "passport": "^0.4.0",
+    "passport-facebook-token": "^3.3.0",
     "remap-istanbul": "~0.8.4",
     "rimraf": "~2.5.4",
     "run-sequence": "~1.2.2",

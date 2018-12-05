@@ -1,6 +1,8 @@
 import {verifyJWTToken} from './auth'
 import db from '../models/'
+import {environment} from './'
 export function verifyJWT_MW(req, res, next) {
+  req.env = environment
   console.log('Headers: ' + JSON.stringify(req.headers, null, 2))
   if (req.headers && req.headers['x-access-token']) {
     verifyJWTToken(req.headers['x-access-token']).then(decode => {
