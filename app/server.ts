@@ -17,10 +17,13 @@ export class Server {
 
   constructor() {
     this.app = express()
-
     // Express middleware
     this.app.use(cors({
-      optionsSuccessStatus: 200
+      optionsSuccessStatus: 200,
+      origin: true,
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      credentials: true,
+      exposedHeaders: ['x-access-token']
     }))
     this.app.use(urlencoded({
       extended: true
