@@ -1,22 +1,15 @@
 const _ = require('lodash')
 import db from '../models/'
+import  {ErrorHandling} from '../config/errorHandling'
+
 let model = ''
-// Error handling
-const codesHandlingCodes = {
-  'SequelizeUniqueConstraintError': 400,
-  'SequelizeValidationErrorItem': 422
-}
-function handleSequelizeError(res, err) {
-    res.status(codesHandlingCodes[err.name]).send({ success: false, errors: _.map(err.errors, _.partialRight(_.pick, ['message'])) })
-}
-function handleValidationErrors(res, result) {
-  res.status(422).send({ success: false, errors: _.map(result.mapped(),  (err) => { return {message: err.msg} })})
-}
 class ApplicationController {
   errors: any
+  private errorHandler
   constructor(m) {
     console.log(m)
     model = m
+    this.errorHandler = new ErrorHandling()
   }
   _create(req, res, options = {}, callback = null) {
     req.getValidationResult()
@@ -25,16 +18,16 @@ class ApplicationController {
           req.body = _.pick(_.cloneDeep(req.body), req.pick || [])
           return db[model].create(req.body)
             .then(appuser => res.status(201).send({success: true, data: appuser, message: options['message'] || 'Successfully Created'}))
-            .catch(error => handleSequelizeError(res, error) )
+            .catch(error => this.errorHandler.sequelizer(res, error) )
         } else {
-          handleValidationErrors(res, result)
+          this.errorHandler.validations(res, result)
         }
       })
   }
   _list(req, res, options = {}, callback = null) {
     return db[model].findAll({ include: [{ all: true }] }).then(data =>
       res.status(200).send({success: true, data: data}))
-      .catch(error => handleSequelizeError(res, error))
+      .catch(error => this.errorHandler.sequelizer(res, error) )
   }
   _findOne(req, res, callback = null) {
     req.getValidationResult().then(function(result) {
@@ -45,165 +38,26 @@ class ApplicationController {
                 else
                   res.status(200).send(data)
               }
-            ).catch(error => handleSequelizeError(res, error))
+            ).catch(error => this.errorHandler.sequelizer(res, error) )
           } else {
-            handleValidationErrors(res, result)
+          this.errorHandler.validations(res, result)
         }
       })
   }
   _findOrCreate(req, res, options = {}, callback = null) {
-    req.getValidationResult().then(function(result) {
+    req.getValidationResult().then((result) => {
       if (result.isEmpty()) {
         return db[model].findOrCreate(req.condition || {}).spread((data, created) => {
           if (typeof(callback) === 'function')
             callback(data, created)
           else
             res.status(200).send({success: true, data: data, message: created ? 'Successfully Created' : 'Successfully Reterived'})
-        }).catch(error => handleSequelizeError(res, error))
-      }else {}
-        handleValidationErrors(res, result)
+        }).catch(error => this.errorHandler.sequelizer(res, error) )
+      }else {
+        this.errorHandler.validations(res, result)
+      }
     })
   }
-  // _create(req, res, options = {}, callback = null) {
-  //   let errors
-  //   console.log(JSON.stringify(_.cloneDeep(req.body), null, 2))
-  //   req.body = _.pick(_.cloneDeep(req.body), req.pick || [])
-  //   if ( errors = req.validationErrors()) {
-  //     res.unprocessableEntity(errors)
-  //   } else {
-  //     const obj = new this.model(req.body)
-  //     return obj.save((err, data) => {
-  //       if (err && err.code === 11000) {
-  //         res.unprocessableEntity(err)
-  //       }
-  //       if (err) {
-  //         console.error(err)
-  //         res.unprocessableEntity(err)
-  //       }
-  //       if (typeof(callback) === 'function') {
-  //         callback(data)
-  //       } else if (data) {
-  //         return res.created(data, {message: (options && options['message']) ? options['message'] : 'Successfully created.'})
-  //       }
-  //     })
-  //   }
-  // }
-
-  // _findOrCreateBy(req, res, options = {}, callback = null) {
-  //   req.body = _.pick(req.body, req.pick || [])
-  //   if ( this.errors = req.validationErrors()) {
-  //     res.unprocessableEntity(this.errors)
-  //   } else {
-  //     this.model.findOne(req.where, (error, data) => {
-  //       if (error) {
-  //         console.error(error)
-  //         res.unprocessableEntity(error)
-  //       }
-  //       if (!_.isNil(data)) {
-  //         if (this.isCallback(callback)) {
-  //           callback(data)
-  //         } else {
-  //           return res.ok(data, {message: (options && options['message']) ? options['message'] : 'Success find.'})
-  //         }
-  //       } else {
-  //         const obj = new this.model(req.body)
-  //         return obj.save((err, newData) => {
-  //           if (err && err.code === 11000) {
-  //             res.unprocessableEntity(err)
-  //           }
-  //           if (err) {
-  //             console.error(err)
-  //             res.unprocessableEntity(err)
-  //           }
-  //           if (this.isCallback(callback)) {
-  //             callback(newData)
-  //           } else if (newData) {
-  //             return res.ok(newData, {message: (options && options['message']) ? options['message'] : 'Successfully created.'})
-  //           }
-  //         })
-  //       }
-  //     })
-  //   }
-  // }
-  // _update(req, res, options = {}, callback = null) {
-  //   let errors
-  //   console.log(JSON.stringify(req.body, null, 2))
-  //   req.body = _.pick(req.body, req.pick || [])
-  //   if ( errors = req.validationErrors()) {
-  //     res.unprocessableEntity(errors)
-  //   } else {
-  //     this.model.update(req.where, req.body, { new: true }, function(err, data) {
-  //       if (err && err.code === 11000) {
-  //         res.unprocessableEntity(err)
-  //       }
-  //       if (err) {
-  //         console.error(err)
-  //         res.unprocessableEntity(err)
-  //       }
-  //       if (typeof(callback) === 'function') {
-  //         callback(data)
-  //       } else if (data) {
-  //         return res.ok(data, {message: (options && options['message']) ? options['message'] : 'Successfully Updated.'})
-  //       }
-  //     })
-  //   }
-  // }
-  // _updateOne(req, res, options = {}, callback = null) {
-  //   let errors
-  //   console.log(JSON.stringify(req.body, null, 2))
-  //   req.body = _.pick(req.body, req.pick || [])
-  //   if ( errors = req.validationErrors()) {
-  //     res.unprocessableEntity(errors)
-  //   } else {
-  //     this.model.updateOne(req.where, req.body, function(err, data) {
-  //       if (err && err.code === 11000) {
-  //         res.unprocessableEntity(err)
-  //       }
-  //       if (err) {
-  //         console.error(err)
-  //         res.unprocessableEntity(err)
-  //       }
-  //       if (typeof(callback) === 'function') {
-  //         callback(data)
-  //       } else if (data) {
-  //         return res.ok(data, {message: (options && options['message']) ? options['message'] : 'Successfully Updated.'})
-  //       }
-  //     })
-  //   }
-  // }
-  // _find(req, res, options = {}, callback = null) {
-  //   let errors
-  //   if ( errors = req.validationErrors()) {
-  //     res.unprocessableEntity(errors)
-  //   } else {
-  //     this.model.findOne(req.where, (error, data) => {
-  //       if (error) {
-  //         console.error(error)
-  //         res.unprocessableEntity(error)
-  //       }
-  //       if (typeof(callback) === 'function') {
-  //         callback(data)
-  //       } else {
-  //         return res.ok(data, {message: (options && options['message']) ? options['message'] : 'Successfully get.'})
-  //       }
-  //     })
-  //   }
-  // }
-  // _list(req, res, options = {}, callback = null) {
-  //   // let list
-  //   // this.model.find(req.where || {}).sort(req.sort || {}).then(data => {
-  //   //   list = data
-  //   //   return data.length
-  //   // }).then(count => {
-  //   //   if (typeof(callback) === 'function') {
-  //   //     callback(count, list)
-  //   //   } else {
-  //   //     res.ok(list, {message: 'Successfully get the list.', extraData: {count: count}})
-  //   //   }
-  //   // })
-  //   return this.model.findAll({ include: [{ all: true }] }).then(appusers => res.status(200).send(appusers))
-  //     .catch(error => res.boom.badRequest(error))
-  // }
   private isCallback(cb) {
     return typeof(cb) === 'function'
   }
