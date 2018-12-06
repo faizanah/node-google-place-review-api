@@ -73,6 +73,8 @@
     "run-sequence": "~1.2.2",
     "sequelize": "^4.41.2",
     "sequelize-cli": "^2.7.0",
+    "swagger-jsdoc": "^3.2.6",
+    "swagger-ui-express": "^4.0.1",
     "tslint": "~4.5.1",
     "typedoc": "~0.5.7",
     "typescript": "~2.2.1",

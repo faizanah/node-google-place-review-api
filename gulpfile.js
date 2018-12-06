@@ -30,7 +30,7 @@ const TS_TEST_GLOB = "./test/**/*.ts";
 const JS_TEST_GLOB = "./build/**/*.js";
 const JS_SRC_GLOB = "./build/**/*.js";
 const TS_GLOB = [TS_SRC_GLOB];
-const STATIC_FILES = ['./app/**/*.json']
+const STATIC_FILES = ['./app/**/*.json'];
 
 const tsProject = typescript.createProject("tsconfig.json");
 
@@ -44,10 +44,10 @@ gulp.task(CLEAN_COVERAGE, function(callback) {
     rimraf("./coverage", callback);
 });
 
-// Removes the ./docs directory with all its content.
-gulp.task(CLEAN_DOC, function(callback) {
-    rimraf("./docs", callback);
-});
+// // Removes the ./docs directory with all its content.
+// gulp.task(CLEAN_DOC, function(callback) {
+//     rimraf("./docs", callback);
+// });
 
 // Checks all *.ts-files if they are conform to the rules specified in tslint.json.
 gulp.task(TSLINT, function() {
@@ -78,16 +78,16 @@ gulp.task(BUILD, function(callback) {
     runSequence(CLEAN_BUILD, TSLINT, COMPILE_TYPESCRIPT, COPY_STATIC_FILES, callback);
 });
 
-// Generates a documentation based on the code comments in the *.ts files.
-gulp.task(GENERATE_DOC, [CLEAN_DOC], function() {
-    return gulp.src(TS_SRC_GLOB)
-        .pipe(typedoc({
-            out: "./docs",
-            readme: "readme.md",
-            version: true,
-            module: "commonjs"
-        }))
-});
+// // Generates a documentation based on the code comments in the *.ts files.
+// gulp.task(GENERATE_DOC, [CLEAN_DOC], function() {
+//     return gulp.src(TS_SRC_GLOB)
+//         .pipe(typedoc({
+//             out: "./docs",
+//             readme: "readme.md",
+//             version: true,
+//             module: "commonjs"
+//         }))
+// });
 
 // Sets up the istanbul coverage
 gulp.task(PRETEST, function() {
