@@ -1,6 +1,17 @@
 const _ = require('lodash')
 import db from '../models/'
 let model = ''
+// Error handling
+const codesHandlingCodes = {
+  'SequelizeUniqueConstraintError': 400,
+  'SequelizeValidationErrorItem': 422
+}
+function handleSequelizeError(res, err) {
+    res.status(codesHandlingCodes[err.name]).send({ success: false, errors: _.map(err.errors, _.partialRight(_.pick, ['message'])) })
+}
+function handleValidationErrors(res, result) {
+  res.status(422).send({ success: false, errors: _.map(result.mapped(),  (err) => { return {message: err.msg} })})
+}
 class ApplicationController {
   errors: any
   constructor(m) {
@@ -14,16 +25,16 @@ class ApplicationController {
           req.body = _.pick(_.cloneDeep(req.body), req.pick || [])
           return db[model].create(req.body)
             .then(appuser => res.status(201).send({success: true, data: appuser, message: options['message'] || 'Successfully Created'}))
-            .catch(error => res.boom.badRequest(error))
+            .catch(error => handleSequelizeError(res, error) )
         } else {
-          res.boom.badRequest('Validation errors', result.mapped())
+          handleValidationErrors(res, result)
         }
       })
   }
   _list(req, res, options = {}, callback = null) {
     return db[model].findAll({ include: [{ all: true }] }).then(data =>
       res.status(200).send({success: true, data: data}))
-      .catch(error => res.boom.badRequest(error))
+      .catch(error => handleSequelizeError(res, error))
   }
   _findOne(req, res, callback = null) {
     req.getValidationResult().then(function(result) {
@@ -34,9 +45,9 @@ class ApplicationController {
                 else
                   res.status(200).send(data)
               }
-            ).catch(error => res.boom.badRequest(error))
+            ).catch(error => handleSequelizeError(res, error))
           } else {
-          res.boom.badRequest('Validation errors', result.mapped())
+            handleValidationErrors(res, result)
         }
       })
   }
@@ -48,9 +59,9 @@ class ApplicationController {
             callback(data, created)
           else
             res.status(200).send({success: true, data: data, message: created ? 'Successfully Created' : 'Successfully Reterived'})
-        }).catch(error => res.boom.badRequest(error))
+        }).catch(error => handleSequelizeError(res, error))
       }else {}
-        res.boom.badRequest('Validation errors', result.mapped())
+        handleValidationErrors(res, result)
     })
   }
   // _create(req, res, options = {}, callback = null) {
