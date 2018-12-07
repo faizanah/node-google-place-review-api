@@ -8,8 +8,8 @@ import { json, urlencoded } from 'body-parser'
 import { Express } from 'express'
 import * as routes from './routes/'
 import {environment} from './config/'
-
 const PORT: number = environment.port || 3000
+// Swagger definition
 
 export class Server {
 
