@@ -19,5 +19,6 @@ export function initRoutes(app, router) {
   apiRoute.route('/v1/auth/facebook').post(session.facebook)
   apiRoute.route('*').all(verifyJWT_MW)
   apiRoute.get('/v1/users/',  users.list)
+  apiRoute.get('/v1/me',  users.me)
   return apiRoute
 }
