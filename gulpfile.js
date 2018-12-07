@@ -141,7 +141,7 @@ gulp.task(TEST, function(callback) {
 // Runs the build task and starts the server every time changes are detected.
 gulp.task("watch", [BUILD], function() {
     return nodemon({
-        ext: "ts js json html",
+        ext: "ts js json html yaml",
         script: "build/server.js",
         watch: ["app/*", "test/*", "docs/*"],
         tasks: [BUILD]
