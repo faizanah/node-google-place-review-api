@@ -143,7 +143,7 @@ gulp.task("watch", [BUILD], function() {
     return nodemon({
         ext: "ts js json html",
         script: "build/server.js",
-        watch: ["app/*", "test/*"],
+        watch: ["app/*", "test/*", "docs/*"],
         tasks: [BUILD]
     });
 });

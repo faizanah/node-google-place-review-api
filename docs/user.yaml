@@ -1,0 +1,132 @@
+paths:
+  /v1/signup/:
+    post:
+      tags:
+        - User
+      summary: create a new user account
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: sign up
+        description: It enables a user to create an account
+        required: true
+        schema:
+          type: object
+          required:
+            - fullName
+            - email
+            - password
+          properties:
+            fullName:
+              type: string
+              description: User Full name
+            email:
+              type: string
+              description: Email address of User
+            password:
+              type: string
+              description: User password
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+              data:
+                $ref: "#/definitions/user"
+              message:
+                type: string
+                description: Congrats! You have successfully registered
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /v1/login/:
+    post:
+      tags:
+        - User
+      summary: login a user account
+      description: Using your account credentials you need to create a session to receive a token to authenticate all other API calls.
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: login
+        description: It enables a user to authenticate all other API calls.
+        required: true
+        schema:
+          type: object
+          required:
+            - email
+            - password
+          properties:
+            email:
+              type: string
+              description: Email address of User
+            password:
+              type: string
+              description: User password
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+              data:
+                $ref: "#/definitions/user"
+              message:
+                type: string
+                description: Congrats! You have successfully login.
+              token:
+                type: string
+                description: JWT token to authenticate all other api requests.
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+definitions:
+  user:
+    type: object
+    required:
+      - fullName
+      - email
+    properties:
+      id:
+        type: uuid
+        description: Unique uuid of user
+      fullName:
+        type: string
+        description: User Full name
+      email:
+        type: string
+        description: Email address of User
+      phone:
+        type: string
+        description: Phone number of user
+      avatar:
+        type: string
+        description: Profile Image of user
+      createdAt:
+        type: string
+      updatedAt:
+        type: string
+  ErrorResponse:
+    properties:
+      success:
+        type: boolean
+        default: false
+      errors:
+        type: array
+        items:
+          type: object
+          properties:
+            message:
+              type: string
+              description: "The is the descriptive error message."
