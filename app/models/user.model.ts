@@ -116,5 +116,16 @@ module.exports = function(sequelize, DataTypes) {
     else
       return false
   }
+
+  User.prototype.toJSON =  function () {
+    let values = Object.assign({}, this.get())
+
+    delete values.password
+    delete values.resetToken
+    delete values.resetTokenSentAt
+    delete values.resetTokenExpireAt
+    delete values.updatedAt
+    return values
+  }
   return User
 }

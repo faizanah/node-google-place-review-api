@@ -1,6 +1,6 @@
 const _ = require('lodash')
 import db from '../models/'
-import  {ErrorHandling} from '../config/errorHandling'
+import  {handleSequelizerErrors, handleValidationErrors} from '../config/errorHandling'
 
 let model = ''
 class ApplicationController {
@@ -9,7 +9,6 @@ class ApplicationController {
   constructor(m) {
     console.log(m)
     model = m
-    this.errorHandler = new ErrorHandling()
   }
   _create(req, res, options = {}, callback = null) {
     req.getValidationResult()
@@ -18,16 +17,17 @@ class ApplicationController {
           req.body = _.pick(_.cloneDeep(req.body), req.pick || [])
           return db[model].create(req.body)
             .then(appuser => res.status(201).send({success: true, data: appuser, message: options['message'] || 'Successfully Created'}))
-            .catch(error => this.errorHandler.sequelizer(res, error) )
+            .catch(error => handleSequelizerErrors(res, error) )
         } else {
-          this.errorHandler.validations(res, result)
+          console.log('Express Validation Error: ' + JSON.stringify(result.mapped(), null, 2))
+          handleValidationErrors(res, result)
         }
       })
   }
   _list(req, res, options = {}, callback = null) {
     return db[model].findAll({ include: [{ all: true }] }).then(data =>
       res.status(200).send({success: true, data: data}))
-      .catch(error => this.errorHandler.sequelizer(res, error) )
+      .catch(error => handleSequelizerErrors(res, error) )
   }
   _findOne(req, res, callback = null) {
     req.getValidationResult().then(function(result) {
@@ -38,9 +38,9 @@ class ApplicationController {
                 else
                   res.status(200).send(data)
               }
-            ).catch(error => this.errorHandler.sequelizer(res, error) )
+            ).catch(error => handleSequelizerErrors(res, error) )
           } else {
-          this.errorHandler.validations(res, result)
+          handleValidationErrors(res, result)
         }
       })
   }
@@ -52,9 +52,9 @@ class ApplicationController {
             callback(data, created)
           else
             res.status(200).send({success: true, data: data, message: created ? 'Successfully Created' : 'Successfully Reterived'})
-        }).catch(error => this.errorHandler.sequelizer(res, error) )
+        }).catch(error => handleSequelizerErrors(res, error) )
       }else {
-        this.errorHandler.validations(res, result)
+        handleValidationErrors(res, result)
       }
     })
   }
