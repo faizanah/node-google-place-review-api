@@ -1,20 +1,16 @@
 let params = {body: {}, condition: {}, pick: {}}
 export class PlacesController {
-  constructor() {
-  }
+  constructor() {}
   create(req, res) {
-    params.condition = {
-      where: {googlePlaceId: req.body.googlePlaceId},
-      defaults: {}
-    }
+    params.condition = {where: {googlePlaceId: req.body.googlePlaceId}, defaults: {}}
     req.model('Place').findOrCreate(params)
   }
   show(req, res) {
-    let options = {condition: {where: {'$or': [{id: req.params.id}, {googlePlaceId: req.params.id}]}, include: [{ all: true }]}}
-    return req.model('Place').findOne(options)
+    params.condition = {where: {'$or': [{id: req.params.id}, {googlePlaceId: req.params.id}]}, include: [{ all: true }]}
+    return req.model('Place').findOne(params)
   }
   list(req, res) {
-    return req.db['Place'].findAll({ include: [{ all: true }] }).then(data => res.ok(data))
-      .catch(error => res.handleError('Sequelize', error) )
+    params.condition = { include: [{ all: true }] }
+    return req.model('Place').findAll(params)
   }
 }

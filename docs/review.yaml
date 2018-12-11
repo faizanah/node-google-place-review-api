@@ -1,0 +1,72 @@
+paths:
+  /v1/reviews/:
+    post:
+      tags:
+        - Review
+      summary: post a new review
+      security:
+        - x-access-token: []
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: create
+        description: It enables to post a new review
+        required: true
+        schema:
+          type: object
+          required:
+            - googlePlaceId
+            - body
+          properties:
+            googlePlaceId:
+              type: string
+              description: Google Place ID
+            body:
+              type: string
+              description: Review Body
+            isLiked:
+              type: boolean
+              description: It's value is true when user liked a place or false for dislike
+      responses:
+        "201":
+          description: Created
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+              data:
+                $ref: "#/definitions/Review"
+              message:
+                type: string
+                description: Review successfully created
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  Review:
+    type: object
+    required:
+      - body
+      - isLiked
+    properties:
+      id:
+        type: UUID
+        description: Unique uuid of user
+      body:
+        type: string
+        description: Review Body
+      isLiked:
+        type: boolean
+        description: It's value is true when user liked a place or false for dislike
+      place:
+        $ref: "#/definitions/Place"
+      createdBy:
+        $ref: "#/definitions/User"
+      createdAt:
+        type: string
+      updatedAt:
+        type: string

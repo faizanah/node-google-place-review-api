@@ -44,7 +44,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/Error"
   /v1/login/:
     post:
       tags:
@@ -80,7 +80,7 @@ paths:
                 type: boolean
                 default: true
               data:
-                $ref: "#/definitions/user"
+                $ref: "#/definitions/User"
               message:
                 type: string
                 description: Congrats! You have successfully login.
@@ -90,7 +90,7 @@ paths:
         default:
           description: Error
           schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/Error"
   /v1/me/:
       get:
         tags:
@@ -111,16 +111,16 @@ paths:
                   type: boolean
                   default: true
                 data:
-                  $ref: "#/definitions/user"
+                  $ref: "#/definitions/User"
                 message:
                   type: string
                   description: Congrats! You have successfully login.
           default:
             description: Error
             schema:
-              $ref: "#/definitions/ErrorResponse"
+              $ref: "#/definitions/Error"
 definitions:
-  user:
+  User:
     type: object
     required:
       - fullName
@@ -145,16 +145,3 @@ definitions:
         type: string
       updatedAt:
         type: string
-  ErrorResponse:
-    properties:
-      success:
-        type: boolean
-        default: false
-      errors:
-        type: array
-        items:
-          type: object
-          properties:
-            message:
-              type: string
-              description: "The is the descriptive error message."

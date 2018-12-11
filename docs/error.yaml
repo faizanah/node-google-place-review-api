@@ -1,0 +1,14 @@
+definitions:
+  Error:
+    properties:
+      success:
+        type: boolean
+        default: false
+      errors:
+        type: array
+        items:
+          type: object
+          properties:
+            message:
+              type: string
+              description: "The is the descriptive error message."

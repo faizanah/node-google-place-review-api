@@ -8,6 +8,7 @@ import { json, urlencoded } from 'body-parser'
 import { Express } from 'express'
 import * as routes from './routes/'
 import {environment} from './config/'
+import db from './models/'
 const PORT: number = environment.port || 3000
 // Swagger definition
 
@@ -32,10 +33,13 @@ export class Server {
     this.app.use(boom())
     this.app.use(morgan('combined'))
     this.app.use(expressValidator())
-    this.app.listen(PORT, () => {
-      winston.log('info', '--> Server successfully started at port %d', PORT)
+    const self = this.app
+    db['sequelize'].sync().then(function(){
+      self.listen(PORT, () => {
+        routes.initRoutes(self)
+        winston.log('info', '--> Server successfully started at port %d', PORT)
+      })
     })
-    routes.initRoutes(this.app)
   }
 
   getApp() {

@@ -34,7 +34,7 @@ module.exports = function(sequelize, DataTypes) {
     tableName: 'places'
   })
   Place.associate = function(models) {
-    Place.hasMany(models.Review , { as: 'reviews' , foreignKey: 'placeId' })
+    Place.hasMany(models.Review , { as: 'reviews' , foreignKey: 'placeId',  onDelete: 'cascade' })
   }
   return Place
 }

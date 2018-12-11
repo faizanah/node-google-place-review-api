@@ -29,10 +29,10 @@ export function verifyJWT_MW(req, res, next) {
     }
   }
   res.created = function (data, options) {
-    this.status(201).send({success: true, data: data, message: 'Successfully Created'})
+    this.status(201).send({success: true, data: data, message: options.hasOwnProperty('message') ? options['message'] : params.tableName + ' successfully Created'})
   }
-  res.ok = function (data, options) {
-    this.status(200).send({success: true, data: data, message:  'Successfully Reterived'})
+  res.ok = function (data, options = {}) {
+    this.status(200).send({success: true, data: data, message:  options.hasOwnProperty('message') ? options['message'] : 'Successfully Reterived'})
   }
   req.findOne = function(options, callback = null){
     this.getValidationResult().then(function(result) {
@@ -56,9 +56,19 @@ export function verifyJWT_MW(req, res, next) {
           if (typeof(callback) === 'function')
             callback(data, created)
           else
-            res.status(200).send({success: true, data: data, message: created ? 'Successfully Created' : 'Successfully Reterived'})
+            res.ok(data, {message: created ? 'Successfully Created' : 'Successfully Reterived'})
         }).catch(error =>  res.handleError('Sequelize', error))
       }else {
+        res.handleError('Validation', result)
+      }
+    })
+  }
+  req.findAll = function(options, callback = null){
+    this.getValidationResult().then((result) => {
+      if (result.isEmpty()) {
+        return db[params.tableName].findAll(options.condition || {}).then(data => res.ok(data, {message: 'List of all ' + params.tableName}))
+          .catch(error => res.handleError('Sequelize', error))
+      } else {
         res.handleError('Validation', result)
       }
     })
