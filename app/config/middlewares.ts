@@ -7,7 +7,7 @@ let params = {tableName: ''}
 const codesHandlingCodes = {
   'SequelizeUniqueConstraintError': 400,
   'SequelizeValidationErrorItem': 422,
-  'TokenExpiredError': 400
+  'TokenExpiredError': 401
 }
 export function verifyJWT_MW(req, res, next) {
   req.env = environment
@@ -19,7 +19,7 @@ export function verifyJWT_MW(req, res, next) {
   res.handleError = function (type, err) {
     console.log('Error is: ' + JSON.stringify(err, null, 2))
     if (type === 'JwtToken')
-      this.status(codesHandlingCodes[err.name] || 400).send({ success: false, errors: [{message: 'You token is expired'}]})
+      this.status(codesHandlingCodes[err.name] || 401).send({ success: false, errors: err})
     if (type === 'Sequelize')
       this.status(codesHandlingCodes[err.name] || 400).send({ success: false, errors: _.map(err.errors, _.partialRight(_.pick, ['message'])) })
     else if (type === 'Validation') {
@@ -94,7 +94,7 @@ export function verifyJWT_MW(req, res, next) {
       db['User'].findOne({where: {email: decode['email'], id: decode['id']}}).then(function (user) {
           if (!user) {
             req.user = undefined
-            return res.status(401).json({ success: false, errors: [{message: 'Invalid token or Expired!'}] })
+            res.handleError('JwtToken', [{message: 'Invalid token or Expired!'}])
           } else {
             req.user = user
             next()
@@ -104,11 +104,12 @@ export function verifyJWT_MW(req, res, next) {
           next()
         })
     }).catch((err) => {
+      req.user = undefined
       console.log(JSON.stringify(err, null, 2))
       res.handleError('JwtToken', err)
     })
   }else {
     req.user = undefined
-    return res.status(401).json({ success: false, errors: [{message: 'Unauthorized user!'}] })
+    res.handleError('JwtToken', [{message: 'Unauthorized user!'}])
   }
 }
