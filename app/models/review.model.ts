@@ -1,5 +1,4 @@
 'use strict'
-import db from './'
 module.exports = function(sequelize, DataTypes) {
   const Review = sequelize.define('Review', {
     id: {
@@ -41,6 +40,7 @@ module.exports = function(sequelize, DataTypes) {
 
   })
   Review.associate = function(models) {
+    Review.hasMany(models.Attachment , { as: 'attachments' , foreignKey: 'reviewId',  onDelete: 'cascade' })
     Review.belongsTo(models.Place , { as: 'place' , foreignKey: 'placeId' })
     Review.belongsTo(models.User , { as: 'createdBy', foreignKey: 'createdById' })
   }
