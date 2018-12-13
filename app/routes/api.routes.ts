@@ -24,9 +24,10 @@ export function initRoutes(app, router) {
   apiRoute.route('*').all(verifyJWT_MW)
   apiRoute.get('/v1/users/',  users.list)
   apiRoute.get('/v1/me',  users.me)
-  apiRoute.route('/v1/reviews').post(review.create)
   apiRoute.route('/v1/reviews/:id').get(review.show)
   apiRoute.route('/v1/places/:id').get(place.show)
   apiRoute.route('/v1/places/').get(place.list).post(place.create)
+  apiRoute.route('/v1/places/:placeId/reviews').post(review.create).get(review.list)
+
   return apiRoute
 }

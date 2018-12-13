@@ -1,5 +1,5 @@
 paths:
-  /v1/reviews/:
+  /v1/places/{googlePlaceId_or_PlaceId}/reviews/:
     post:
       tags:
         - Review
@@ -9,25 +9,27 @@ paths:
       produces:
       - application/json
       parameters:
-      - in: body
-        name: create
-        description: It enables to post a new review
-        required: true
-        schema:
-          type: object
-          required:
-            - googlePlaceId
-            - body
-          properties:
-            googlePlaceId:
-              type: string
-              description: Google Place ID
-            body:
-              type: string
-              description: Review Body
-            isLiked:
-              type: boolean
-              description: It's value is true when user liked a place or false for dislike
+        - name: googlePlaceId_or_PlaceId
+          description: It's a system place ID or Google Place ID
+          in: path
+          required: true
+          type: string
+        - in: body
+          name: create
+          description: It enables to post a new review
+          required: true
+          schema:
+            type: object
+            required:
+              - body
+              - isLiked
+            properties:
+              body:
+                type: string
+                description: Review body message
+              isLiked:
+                type: boolean
+                description: It's value is true when user liked a place or false for dislike
       responses:
         "201":
           description: Created
@@ -46,26 +48,69 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/Error"
+    get:
+      tags:
+        - Review
+      summary: list of reviews of a give place
+      security:
+        - x-access-token: []
+      produces:
+      - application/json
+      parameters:
+        - name: googlePlaceId_or_PlaceId
+          description: It's a system place ID or Google Place ID
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+              data:
+               type: array
+               items:
+                  $ref: "#/definitions/Review"
+              message:
+                type: string
+                description: List of Riews
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
 definitions:
   Review:
     type: object
     required:
+      - id
       - body
       - isLiked
+      - googlePlaceId
+      - placeId
+      - createdById
     properties:
       id:
         type: UUID
         description: Unique uuid of user
+      googlePlaceId:
+        type: string
+        description: Google Place ID
       body:
         type: string
         description: Review Body
       isLiked:
         type: boolean
         description: It's value is true when user liked a place or false for dislike
-      place:
-        $ref: "#/definitions/Place"
-      createdBy:
-        $ref: "#/definitions/User"
+      placeId:
+        type: string
+        description: This key reference the place object
+      createdById:
+        type: string
+        description: This key reference the user who posted a review.
       createdAt:
         type: string
       updatedAt:

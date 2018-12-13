@@ -10,7 +10,13 @@ module.exports = function(sequelize, DataTypes) {
     },
     body: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        len: {
+          args: [3, 1024],
+          msg: 'Review body must be between 3 and 1024 characters in length'
+        }
+      }
     },
     isLiked: {
       type: DataTypes.BOOLEAN,
@@ -31,6 +37,11 @@ module.exports = function(sequelize, DataTypes) {
       //   model: 'Place',
       //   key: 'id'
       // }
+    },
+    googlePlaceId: {
+      allowNull: false,
+      type: DataTypes.STRING,
+      unique: true
     }
   }, {
 
@@ -55,5 +66,8 @@ module.exports = function(sequelize, DataTypes) {
       })
     })
   })
+  Review.afterCreate = function (review) {
+    return review.reload()
+  }
   return Review
 }

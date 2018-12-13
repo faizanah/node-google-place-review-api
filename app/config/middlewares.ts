@@ -34,6 +34,13 @@ export function verifyJWT_MW(req, res, next) {
     }
   }
   res.created = function (data, options = {}) {
+    if ( options && options['extra'] ) {
+      console.log(options['extra'])
+      Object.keys(options['extra']).forEach(function(key, value) {
+        console.log(key + ': ' + options['extra'][key])
+        data[key] = options['extra'][key]
+      })
+    }
     this.status(201).send({success: true, data: data, message: options.hasOwnProperty('message') ? options['message'] : params.tableName + ' successfully created'})
   }
   res.ok = function (data, options = {}) {
@@ -85,8 +92,12 @@ export function verifyJWT_MW(req, res, next) {
     this.getValidationResult().then(function(result) {
       if (result.isEmpty()) {
         body = _.pick(_.cloneDeep(body), options.pick || [])
-        return db[params.tableName].create(body)
-          .then(data => res.created(data))
+        return db[params.tableName].create(body, options.condition || {})
+          .then(data => {
+            if (typeof(callback) === 'function')
+              callback(data)
+            else
+              res.created(data)})
           .catch(error => {
             res.handleError('Sequelize', error)
           })
