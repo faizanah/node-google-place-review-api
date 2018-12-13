@@ -99,6 +99,11 @@ paths:
         description: Find a place by id or googlePlaceId
         security:
           - x-access-token: []
+        parameters:
+          - name: id_or_google_place_id
+            in: path
+            required: true
+            type: string
         produces:
         - application/json
         responses:
