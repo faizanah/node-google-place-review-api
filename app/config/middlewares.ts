@@ -33,7 +33,7 @@ export function verifyJWT_MW(req, res, next) {
       this.status(400).send({ success: false, errors: err})
     }
   }
-  res.created = function (data, options) {
+  res.created = function (data, options = {}) {
     this.status(201).send({success: true, data: data, message: options.hasOwnProperty('message') ? options['message'] : params.tableName + ' successfully created'})
   }
   res.ok = function (data, options = {}) {
@@ -78,19 +78,20 @@ export function verifyJWT_MW(req, res, next) {
       }
     })
   }
-  req.create = function(options){
+  req.create = function(options, callback = null){
     console.log(JSON.stringify(this.body, null, 2))
+    console.log('Options is: ' + JSON.stringify(options, null, 2))
     let body = this.body
     this.getValidationResult().then(function(result) {
       if (result.isEmpty()) {
         body = _.pick(_.cloneDeep(body), options.pick || [])
         return db[params.tableName].create(body)
           .then(data => res.created(data))
-          .catch(error => res.handleError('Sequelize', error))
-      } else {
-        console.log('Express Validation Error: ' + JSON.stringify(result.mapped(), null, 2))
+          .catch(error => {
+            res.handleError('Sequelize', error)
+          })
+      } else
         res.handleError('Validation', result)
-      }
     })
   }
   if (req.headers && req.headers['x-access-token']) {
