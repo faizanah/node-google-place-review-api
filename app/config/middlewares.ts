@@ -7,6 +7,7 @@ let params = {tableName: ''}
 const codesHandlingCodes = {
   'SequelizeUniqueConstraintError': 400,
   'SequelizeValidationErrorItem': 422,
+  'SequelizeDatabaseError': 400,
   'TokenExpiredError': 401
 }
 export function verifyJWT_MW(req, res, next) {
@@ -20,8 +21,12 @@ export function verifyJWT_MW(req, res, next) {
     console.log('Error is: ' + JSON.stringify(err, null, 2))
     if (type === 'JwtToken')
       this.status(codesHandlingCodes[err.name] || 401).send({ success: false, errors: err})
-    if (type === 'Sequelize')
-      this.status(codesHandlingCodes[err.name] || 400).send({ success: false, errors: _.map(err.errors, _.partialRight(_.pick, ['message'])) })
+    if (type === 'Sequelize') {
+      if (err.name === 'SequelizeDatabaseError') {
+        this.status(codesHandlingCodes[err.name] || 400).send({ success: false, errors: [{message: err.original.sqlMessage}]})
+      } else
+        this.status(codesHandlingCodes[err.name] || 400).send({ success: false, errors: _.map(err.errors, _.partialRight(_.pick, ['message'])) })
+    }
     else if (type === 'Validation') {
       this.status(422).send({ success: false, errors: _.map(err.mapped(),  (error) => { return {message: error.msg} })})
     }else {
@@ -29,10 +34,10 @@ export function verifyJWT_MW(req, res, next) {
     }
   }
   res.created = function (data, options) {
-    this.status(201).send({success: true, data: data, message: options.hasOwnProperty('message') ? options['message'] : params.tableName + ' successfully Created'})
+    this.status(201).send({success: true, data: data, message: options.hasOwnProperty('message') ? options['message'] : params.tableName + ' successfully created'})
   }
   res.ok = function (data, options = {}) {
-    this.status(200).send({success: true, data: data, message:  options.hasOwnProperty('message') ? options['message'] : 'Successfully Reterived'})
+    this.status(200).send({success: true, data: data, message:  options.hasOwnProperty('message') ? options['message'] : params.tableName + ' successfully retrieved'})
   }
   req.findOne = function(options, callback = null){
     this.getValidationResult().then(function(result) {
@@ -56,7 +61,7 @@ export function verifyJWT_MW(req, res, next) {
           if (typeof(callback) === 'function')
             callback(data, created)
           else
-            res.ok(data, {message: created ? 'Successfully Created' : 'Successfully Reterived'})
+            res.ok(data, {message: created ? 'Successfully Created' : 'Successfully Retrived'})
         }).catch(error =>  res.handleError('Sequelize', error))
       }else {
         res.handleError('Validation', result)

@@ -1,5 +1,37 @@
 paths:
   /v1/places/:
+    get:
+      tags:
+        - Place
+      summary: List of all places
+      security:
+        - x-access-token: []
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Place"
+                  reviews:
+                    type: array
+                    items:
+                      $ref: "#/definitions/Review"
+              message:
+                type: string
+                description: Place successfully created/Reterived
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
     post:
       tags:
         - Place
@@ -17,10 +49,28 @@ paths:
           type: object
           required:
             - googlePlaceId
+            - name
+            - contact
+            - address
           properties:
             googlePlaceId:
               type: string
               description: Google Place ID
+            name:
+              type: string
+              description: Place Name
+            contact:
+              type: string
+              description: Place contact information
+            address:
+              type: string
+              description: Place address details
+            latitude:
+              type: decimal
+              description: Place latitude
+            longitude:
+              type: decimal
+              description: Place longitude
       responses:
         "201":
           description: Created
@@ -31,7 +81,9 @@ paths:
                 type: boolean
                 default: true
               data:
-                $ref: "#/definitions/Place"
+                type: array
+                items:
+                  $ref: "#/definitions/Place"
               message:
                 type: string
                 description: Place successfully created/Reterived
@@ -59,7 +111,9 @@ paths:
                   type: boolean
                   default: true
                 data:
-                  $ref: "#/definitions/Place"
+                  type: array
+                  items:
+                    $ref: "#/definitions/Place"
                 message:
                   type: string
                   description: Place successfully Reterived
@@ -79,6 +133,21 @@ definitions:
       googlePlaceId:
         type: string
         description: Google Place ID
+      name:
+        type: string
+        description: Place Name
+      address:
+        type: string
+        description: Place Address
+      contact:
+        type: string
+        description: Place Contact Information
+      latitude:
+        type: decimal
+        description: Place latitude
+      longitude:
+        type: decimal
+        description: Place longitude
       reviewsCount:
         type: number
         description: Total number of reviews associated with this place
@@ -88,10 +157,6 @@ definitions:
       dislikesCount:
         type: number
         description: Total Count of dislikes
-      reviews:
-        type: array
-        items:
-          $ref: "#/definitions/Review"
       createdAt:
         type: string
       updatedAt:

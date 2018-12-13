@@ -12,6 +12,21 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       unique: true
     },
+    name: {
+      type: DataTypes.STRING(200)
+    },
+    address: {
+      type: DataTypes.STRING(200)
+    },
+    contact: {
+      type: DataTypes.STRING(25)
+    },
+    latitude: {
+      type: DataTypes.DECIMAL
+    },
+    longitude: {
+      type: DataTypes.DECIMAL
+    },
     reviewsCount: {
       allowNull: false,
       type: DataTypes.INTEGER,
