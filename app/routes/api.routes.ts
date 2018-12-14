@@ -21,6 +21,8 @@ export function initRoutes(app, router) {
   apiRoute.post('/v1/signup/', registration.signup)
   apiRoute.post('/v1/password/reset', password.create)
   apiRoute.route('/v1/auth/facebook').post(session.facebook)
+  apiRoute.route('/v1/places/:id').get(place.show)
+  apiRoute.route('/v1/places/').get(place.list).post(place.create)
   apiRoute.route('*').all(verifyJWT_MW)
   apiRoute.get('/v1/users/',  users.list)
   apiRoute.get('/v1/me',  users.me)
