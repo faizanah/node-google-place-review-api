@@ -8,6 +8,8 @@ import { json, urlencoded } from 'body-parser'
 import { Express } from 'express'
 import * as routes from './routes/'
 import {environment} from './config/'
+import { activerecord } from './config/middlewares'
+
 import db from './models/'
 const PORT: number = environment.port || 3000
 // Swagger definition
@@ -33,6 +35,7 @@ export class Server {
     this.app.use(boom())
     this.app.use(morgan('combined'))
     this.app.use(expressValidator())
+    this.app.use(activerecord)
     const self = this.app
     db['sequelize'].sync().then(function(){
       self.listen(PORT, () => {

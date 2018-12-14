@@ -1,8 +1,8 @@
 import {verifyJWTToken} from './auth'
+import * as winston from 'winston'
 import db from '../models/'
-import {environment} from './index'
+import {environment} from './'
 import * as _ from 'lodash'
-import {handleSequelizerErrors, handleValidationErrors} from './errorHandling'
 let params = {tableName: ''}
 const codesHandlingCodes = {
   'SequelizeUniqueConstraintError': 400,
@@ -10,7 +10,8 @@ const codesHandlingCodes = {
   'SequelizeDatabaseError': 400,
   'TokenExpiredError': 401
 }
-export function verifyJWT_MW(req, res, next) {
+export function activerecord(req, res, next) {
+  winston.log('info', '--> Initialisations the activerecord')
   req.env = environment
   req.db = db
   req.model = function (model: string) {
@@ -105,6 +106,11 @@ export function verifyJWT_MW(req, res, next) {
         res.handleError('Validation', result)
     })
   }
+  next()
+}
+
+export function verifyJWT_MW(req, res, next) {
+  winston.log('info', '--> Initialisations the verifyJWT_MW')
   if (req.headers && req.headers['x-access-token']) {
     verifyJWTToken(req.headers['x-access-token']).then(decode => {
       console.log('Decode Token:' + JSON.stringify(decode, null, 2))

@@ -1,12 +1,10 @@
 import * as winston from 'winston'
 import {UsersController, RegistrationController, SessionController, PasswordController, ReviewsController, PlacesController} from '../controllers'
 import { verifyJWT_MW } from '../config/middlewares'
-// import { custom } from '../config/custom'
-const passportConf = require('../config/passport')
 import {swagger, swaggerDocs} from '../config/swagger'
 
 export function initRoutes(app, router) {
-  winston.log('info', '--> Initialisations des routes')
+  winston.log('info', '--> Initialisations the routes')
   let apiRoute = router
   const users = new UsersController()
   const registration = new RegistrationController()
@@ -14,22 +12,20 @@ export function initRoutes(app, router) {
   const password = new PasswordController()
   const review = new ReviewsController()
   const place = new PlacesController()
-  // apiRoute.get('/', (req, res) => res.status(200).send({message: 'Api Server is running!'}))
-  // apiRoute.route('*').all(custom)
+  apiRoute.get('/', (req, res) => res.status(200).send({message: 'Api Server is running!'}))
   apiRoute.use('/docs', swagger, swaggerDocs)
   apiRoute.post('/v1/login', session.login)
   apiRoute.post('/v1/signup/', registration.signup)
   apiRoute.post('/v1/password/reset', password.create)
   apiRoute.route('/v1/auth/facebook').post(session.facebook)
+  apiRoute.route('/v1/places/').get(place.list).post(place.create)
+  apiRoute.route('/v1/places/:id').get(place.show)
+  apiRoute.route('*').all(verifyJWT_MW)
   apiRoute.route('/v1/places/:id').get(place.show)
   apiRoute.route('/v1/places/').get(place.list).post(place.create)
-  apiRoute.route('*').all(verifyJWT_MW)
   apiRoute.get('/v1/users/',  users.list)
   apiRoute.get('/v1/me',  users.me)
   apiRoute.route('/v1/reviews/:id').get(review.show)
-  apiRoute.route('/v1/places/:id').get(place.show)
-  apiRoute.route('/v1/places/').get(place.list).post(place.create)
-  apiRoute.route('/v1/places/:placeId/reviews').post(review.create).get(review.list)
-
+  apiRoute.route('/v1/places/:placeId/reviews').post(review.create)
   return apiRoute
 }

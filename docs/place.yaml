@@ -4,8 +4,6 @@ paths:
       tags:
         - Place
       summary: List of all places
-      security:
-        - x-access-token: []
       produces:
       - application/json
       responses:
@@ -36,8 +34,6 @@ paths:
       tags:
         - Place
       summary: create or find a place by google place id
-      security:
-        - x-access-token: []
       produces:
       - application/json
       parameters:
