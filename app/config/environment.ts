@@ -17,8 +17,10 @@ module.exports = {
        clientSecret:  process.env.FACEBOOK_APP_SECRET,
      },
      aws: {
-       access_key: process.env.AWS_ACCESS_KEY,
-       secret_key: process.env.AWS_SECRET_KEY
+       accessKey: process.env.AWS_ACCESS_KEY,
+       secretKey: process.env.AWS_SECRET_KEY,
+       s3Bucket: process.env.S3_BUCKET,
+       region: process.env.AWS_REGION
      },
      host: 'http://localhost:3000'
    },

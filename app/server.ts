@@ -5,9 +5,12 @@ import * as morgan from 'morgan'
 import * as cors from 'cors'
 import * as expressValidator from 'express-validator'
 import { json, urlencoded } from 'body-parser'
+// import * as bodyParser from 'body-parser'
 import { Express } from 'express'
 import * as routes from './routes/'
 import {environment} from './config/'
+import { activerecord } from './config/middlewares'
+
 import db from './models/'
 const PORT: number = environment.port || 3000
 // Swagger definition
@@ -27,12 +30,13 @@ export class Server {
       exposedHeaders: ['x-access-token']
     }))
     this.app.use(urlencoded({
-      extended: true
+      extended: false
     }))
     this.app.use(json())
     this.app.use(boom())
     this.app.use(morgan('combined'))
     this.app.use(expressValidator())
+    this.app.use(activerecord)
     const self = this.app
     db['sequelize'].sync().then(function(){
       self.listen(PORT, () => {
