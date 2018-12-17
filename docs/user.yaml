@@ -37,7 +37,10 @@ paths:
                 type: boolean
                 default: true
               data:
-                $ref: "#/definitions/user"
+                $ref: "#/definitions/User"
+              token:
+                type: string
+                description: JWT token to authenticate all other api requests.
               message:
                 type: string
                 description: Congrats! You have successfully registered
