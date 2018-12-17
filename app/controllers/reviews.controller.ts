@@ -36,6 +36,10 @@ export class ReviewsController {
       }
     })
   }
+  list(req, res) {
+    params.condition = {where: {'$or': [{id: req.params.placeId}, {googlePlaceId: req.params.placeId}]}}
+    req.model('Review').findAll(params)
+  }
   show(req, res) {
     params.condition = {where: {id: req.params.id, createdById: req.user.id}, include: [{ all: true }]}
     return req.model('Review').findOne(params)
