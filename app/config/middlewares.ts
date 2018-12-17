@@ -96,7 +96,7 @@ export function activerecord(req, res, next) {
     this.getValidationResult().then(function(result) {
       if (result.isEmpty()) {
         body = _.pick(_.cloneDeep(body), options.pick || [])
-        return db[params.tableName].create(body, options.condition || {})
+        return db[params.tableName].create(body, options.include || {})
           .then(data => {
             if (typeof(callback) === 'function')
               callback(data)

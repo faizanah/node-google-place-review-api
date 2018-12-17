@@ -4,6 +4,8 @@ paths:
       tags:
         - Review
       summary: post a new review
+      consumes:
+        - multipart/form-data
       security:
         - x-access-token: []
       produces:
@@ -14,22 +16,21 @@ paths:
           in: path
           required: true
           type: string
-        - in: body
-          name: create
-          description: It enables to post a new review
+        - in: formData
+          name: attachment
+          type: file
           required: true
-          schema:
-            type: object
-            required:
-              - body
-              - isLiked
-            properties:
-              body:
-                type: string
-                description: Review body message
-              isLiked:
-                type: boolean
-                description: It's value is true when user liked a place or false for dislike
+          description: The file to upload.
+        - in: formData
+          name: isLiked
+          type: boolean
+          required: true
+          description: It's value is true when user liked a place or false for dislike
+        - in: formData
+          name: body
+          type: string
+          required: true
+          description: Review body message
       responses:
         "201":
           description: Created
@@ -111,6 +112,10 @@ definitions:
       createdById:
         type: string
         description: This key reference the user who posted a review.
+      attachments:
+        type: array
+        items:
+          $ref: "#/definitions/Attachment"
       createdAt:
         type: string
       updatedAt:
