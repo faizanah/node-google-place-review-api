@@ -144,6 +144,7 @@ gulp.task("watch", [BUILD], function() {
         ext: "ts js json html yaml",
         script: "build/server.js",
         watch: ["app/*", "test/*", "docs/*"],
-        tasks: [BUILD]
+        tasks: [BUILD],
+        nodeArgs: ['--inspect']
     });
 });
