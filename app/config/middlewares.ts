@@ -47,6 +47,9 @@ export function activerecord(req, res, next) {
   res.ok = function (data, options = {}) {
     this.status(200).send({success: true, data: data, message:  options.hasOwnProperty('message') ? options['message'] : params.tableName + ' successfully retrieved'})
   }
+  res.unprocessableEntity = function (message, options = {}) {
+    this.status(422).send({success: false, errors: [{message: message}]})
+  }
   res.notFound = function (message, options = {}) {
     this.status(404).send({success: false, errors: [{message: message}]})
   }
