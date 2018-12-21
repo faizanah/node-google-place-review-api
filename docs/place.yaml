@@ -149,6 +149,15 @@ definitions:
       longitude:
         type: decimal
         description: Place longitude
+      rating:
+        type: float
+        description: Google place rating
+      website:
+        type: string
+        description: Place website address
+      mapUrl:
+        type: string
+        description: Place google map url
       reviewsCount:
         type: number
         description: Total number of reviews associated with this place
