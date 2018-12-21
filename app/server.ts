@@ -9,7 +9,7 @@ import { Express } from 'express'
 import * as routes from './routes/'
 import {environment} from './config/'
 import { activerecord } from './config/middlewares'
-
+const path = require('path')
 import db from './models/'
 const PORT: number = environment.port || 3000
 // Swagger definition
@@ -36,6 +36,7 @@ export class Server {
     this.app.use(morgan('combined'))
     this.app.use(expressValidator())
     this.app.use(activerecord)
+    this.app.use(express.static('public'))
     const self = this.app
     db['sequelize'].sync().then(function(){
       self.listen(PORT, () => {

@@ -3,7 +3,8 @@ paths:
     get:
       tags:
         - Place
-      summary: List of all places
+      summary: Get Places Information
+      description: Returns a list of the available Places
       produces:
       - application/json
       responses:

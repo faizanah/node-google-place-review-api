@@ -2,7 +2,7 @@ paths:
   /v1/signup/:
     post:
       tags:
-        - User
+        - Registration
       summary: create a new user account
       produces:
       - application/json
@@ -51,7 +51,7 @@ paths:
   /v1/login/:
     post:
       tags:
-        - User
+        - Session
       summary: login a user account
       description: Using your account credentials you need to create a session to receive a token to authenticate all other API calls.
       produces:

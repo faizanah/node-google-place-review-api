@@ -1,11 +1,16 @@
 import {environment} from './'
 const swaggerJSDoc = require('swagger-jsdoc')
 const swaggerUi = require('swagger-ui-express')
+const { name, version, description } = require('../../package.json')
+const fs = require('fs')
+const path = require('path')
+const css = fs.readFileSync(path.resolve(__dirname, '../../public/swagger-ui.css'), 'utf8')
+
 const swaggerDefinition = {
   info: {
-    title: 'IMFO API',
-    version: '0.0.0',
-    description: 'This is the IMFO REST API',
+    title: name,
+    version: version,
+    description: description,
     contact: {
       name: 'VF Support',
       url: 'https://www.virtualforce.io/support',
@@ -22,9 +27,15 @@ const swaggerDefinition = {
     }
   },
   tags: [{
-    'name': 'Session',
-    'description': 'Session operations'
-  }],
+      'name': 'Session',
+      'description': ''
+    }, {
+      'name': 'Registration',
+      'description': ''
+    }, {
+      'name': 'User',
+      'description': ''
+    }],
   schemes: ['https', 'http'],
   consumes: ['application/json'],
   produces: ['application/json']
@@ -33,8 +44,13 @@ const options = {
   swaggerDefinition,
   apis: ['./docs/**/*.yaml']
 }
+const custom = {
+  explorer: true,
+  customCss: css,
+  customSiteTitle: 'IMFO',
+  customfavIcon:  '/logo.png'
+}
 const swaggerSpec = swaggerJSDoc(options)
 const swagger = swaggerUi.serve
-const swaggerDocs = swaggerUi.setup(swaggerSpec)
-
+const swaggerDocs = swaggerUi.setup(swaggerSpec, custom)
 export { swagger, swaggerDocs };
