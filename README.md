@@ -14,6 +14,8 @@
 - [Contributing]
 ##
 
+![divider](./divider.png)
+
 ## Tech
 * [node.js] - evented I/O for the backend
 * [Express] - fast node.js network app framework.
