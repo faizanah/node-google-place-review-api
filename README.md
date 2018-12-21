@@ -4,6 +4,7 @@
 
 ## Table of Contents
 - [Tech]
+- [Relational Schema]
 - [Introduction]
 - [Up and Running]
     - [Local Setup]
@@ -12,9 +13,11 @@
 - [REST API]
 	- [Endpoints]
 - [Contributing]
-##
 
-![divider](./divider.png)
+<p align="center">
+  <img src="divider.png" alt="IMFO" width="400" />
+</p>
+![divider](divider.png)
 
 ## Tech
 * [node.js] - evented I/O for the backend
@@ -22,6 +25,8 @@
 * [Mysql] - Sequelize is a promise-based ORM for Node.js
 * [Sequelize] -  In addition, we're going to use Sequelize, which is a database [ORM][9] that will interface with the **MySQL**, **PostgreSQL**, **SQLite**, and **MariaDB** databases for us.
 
+## Relational Schema
+![divider](app/db/relational-schemas/21-12-2018-schema.png)
 ## Introduction
 
 Our app directory consists on the following folders
