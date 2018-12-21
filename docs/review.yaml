@@ -1,5 +1,5 @@
 paths:
-  /v1/places/{googlePlaceId_or_PlaceId}/reviews/:
+  /v1/places/{googlePlaceId}/reviews/:
     post:
       tags:
         - Review
