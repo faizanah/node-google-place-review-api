@@ -9,8 +9,8 @@ paths:
       produces:
       - application/json
       parameters:
-        - name: googlePlaceId_or_PlaceId
-          description: It's a system place ID or Google Place ID
+        - name: googlePlaceId
+          description: It's a Google Place ID
           in: path
           required: true
           type: string

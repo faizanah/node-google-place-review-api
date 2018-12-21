@@ -3,9 +3,10 @@ let params = {body: {}, condition: {}, pick: ['createdById', 'placeId', 'body', 
 export class ReviewsController {
   constructor() {}
   create(req, res) {
-    // req.checkBody('googlePlaceId', 'Enter a valid Google Place ID.').isLength({ min: 3, max: 100 })
-    // req.checkBody('body', 'Review Body must be between 3 to 1024 characters.').isLength({ min: 3, max: 1024 })
-    params.condition = {where: {'$or': [{id: req.params.placeId}, {googlePlaceId: req.params.placeId}]}, defaults: {}}
+    req.checkParams('placeId', 'Enter a valid Google Place ID.').notEmpty()
+    req.check('body').notEmpty().withMessage('Review Body can\'t be blank').isLength({min: 3, max: 140}).withMessage('Review Body must be between 3 to 140 characters.')
+    req.check('isLiked').isBoolean().withMessage('Review liked must be boolean value.')
+    params.condition = {where: {googlePlaceId: req.params.placeId}, defaults: {}}
     req.model('Place').findOrCreate(params, (place, isNew) => {
       req.body.createdById = req.user.id
       req.body.placeId = place.id
