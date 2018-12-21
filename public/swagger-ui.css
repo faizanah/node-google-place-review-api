@@ -1249,7 +1249,7 @@
 
 .swagger-ui .topbar {
   padding: 8px 30px;
-  background-color: #1C165D !important;
+  background-color: #89bf04
 }
 
 .swagger-ui .topbar .topbar-wrapper {
@@ -1667,4 +1667,25 @@
 }
 .swagger-ui .btn.authorize svg {
   fill: #336E7B;
+}
+.logo__img {
+  content: url('/logo.png') !important;
+  width: 72px; /* Width of new image */
+  height: 31px; /* Height of new image */
+}
+
+.topbar-wrapper > .link > img {
+  display: block;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  content: url('/logo.png') !important;
+  width: 31px; /* Width of new image */
+  height: 31px; /* Height of new image */
+}
+.topbar-wrapper > .link > span {
+  display: none;
+}
+.topbar-wrapper > .link:after {
+  margin-left: 15px !important;
+  content: 'IMFO' !important;
 }
