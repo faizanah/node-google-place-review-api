@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
       validate: {
         len: {
           args: [3, 1024],
-          msg: 'Review body must be between 3 and 1024 characters in length'
+          msg: 'Review body must be between 3 and 140 characters in length'
         }
       }
     },

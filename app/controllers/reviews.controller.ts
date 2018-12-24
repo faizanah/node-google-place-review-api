@@ -4,11 +4,9 @@ import {uploader} from '../config/upload'
 export class ReviewsController {
   constructor() {}
   create(req, res) {
-    req.check('body').notEmpty().withMessage('Review Body is required')
-    req.check('isLiked').isBoolean().withMessage('Invalid value of review liked ')
-    res.ok({body: req.body, file: req.file, files: req.files})
-    params.condition = {where: {'$or': [{id: req.params.placeId}, {googlePlaceId: req.params.placeId}]}}
-    return req.model('Place').findOne(params, function (place) {
+    req.checkParams('placeId', 'Enter a valid Google Place ID.').notEmpty()
+    params.condition = {where: {googlePlaceId: req.params.placeId}, defaults: {}}
+    req.model('Place').findOrCreate(params, (place, isNew) => {
       if (place) {
         const storeDir = 'uploads/reviews/'
         const upload = uploader(storeDir, res).single('attachment')
@@ -17,6 +15,8 @@ export class ReviewsController {
             return res.status(422).send({success: false, errors: err })
           }
           if (req.file) {
+            req.check('body').notEmpty().withMessage('Review Body can\'t be blank').isLength({min: 3, max: 140}).withMessage('Review Body must be between 3 to 140 characters.')
+            req.check('isLiked').isBoolean().withMessage('Review liked must be boolean value.')
             req.body = {
               createdById: req.user.id,
               placeId: place.id,
