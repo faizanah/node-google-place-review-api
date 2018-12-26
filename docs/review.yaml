@@ -78,6 +78,39 @@ paths:
                   $ref: "#/definitions/Review"
               message:
                 type: string
+                description: List of Reviews
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
+  v1/reviews/{id}:
+    get:
+      tags:
+        - Review
+      summary: Find a review
+      security:
+        - x-access-token: []
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          description: Review ID
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+              data:
+                $ref: "#/definitions/Review"
+              message:
+                type: string
                 description: List of Riews
         default:
           description: Error

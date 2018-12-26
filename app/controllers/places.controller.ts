@@ -27,7 +27,6 @@ export class PlacesController {
     return req.model('Place').findOne(params)
   }
   list(req, res) {
-    params.condition = { include: [{ all: true }] }
     return req.model('Place').findAll(params)
   }
 }
