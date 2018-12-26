@@ -1,9 +1,16 @@
-# IMFO Backend API
+<p align="center">
+  <img src="./public/logo.png" alt="imfo" width="250" />
+</p>
 
->IMFO project with NodeJS + Express + Sequelize ORM.. :heart:
+<h1 align="center">IMFO Backend API</h1>
+
+<p align="center">
+  <img src="divider.png" alt="IMFO" width="400" />
+</p>
 
 ## Table of Contents
 - [Tech]
+- [Relational Schema]
 - [Introduction]
 - [Up and Running]
     - [Local Setup]
@@ -12,7 +19,11 @@
 - [REST API]
 	- [Endpoints]
 - [Contributing]
-##
+
+<p align="center">
+  <img src="divider.png" alt="IMFO" width="400" />
+</p>
+![divider](divider.png)
 
 ## Tech
 * [node.js] - evented I/O for the backend
@@ -20,6 +31,8 @@
 * [Mysql] - Sequelize is a promise-based ORM for Node.js
 * [Sequelize] -  In addition, we're going to use Sequelize, which is a database [ORM][9] that will interface with the **MySQL**, **PostgreSQL**, **SQLite**, and **MariaDB** databases for us.
 
+## Relational Schema
+![divider](app/db/relational-schemas/26-12-2018-schema.png)
 ## Introduction
 
 Our app directory consists on the following folders
@@ -300,7 +313,7 @@ npm run prettify
 - [x] Add JWT Token based authentication to secure API
 - [x] Add subdomain `api.example.com/v*` for **API** and `admin.example.com` for **Admin Panel**
 - [ ] Add Admim Panel UI for Reporting
-- [ ] Add Swagger UI Documentation
+- [x] Add Swagger UI Documentation
 - [ ] Add public pages
 #### Support [Virtualforce INC][7]
 
