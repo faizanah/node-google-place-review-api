@@ -99,11 +99,53 @@ paths:
         tags:
           - User
         summary: Fetch Logged in user details
-        description: Using your account credentials you need to create a session to receive a token to authenticate all other API calls.
+        description:
         security:
           - x-access-token: []
         produces:
         - application/json
+        responses:
+          "200":
+            description: OK
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  default: true
+                data:
+                  $ref: "#/definitions/User"
+                message:
+                  type: string
+                  description: Congrats! You have successfully login.
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/Error"
+      post:
+        tags:
+          - User
+        summary: Update current user
+        description:
+        security:
+          - x-access-token: []
+        produces:
+          - application/json
+        consumes:
+          - multipart/form-data
+        parameters:
+          - name: fullName
+            description: User full name
+            in: formData
+            type: string
+          - in: formData
+            name: avatar
+            type: file
+            description: The file to upload.
+          - in: formData
+            name: phone
+            type: string
+            description: User phone number
         responses:
           "200":
             description: OK
@@ -144,6 +186,21 @@ definitions:
       avatar:
         type: string
         description: Profile Image of user
+      reviewsCount:
+        type: number
+        description: Total number of reviews created by this user
+      likesCount:
+        type: number
+        description: Total number of liked reviews created by this user
+      dislikesCount:
+        type: number
+        description: Total number of disliked reviews created by this user
+      photosCount:
+        type: number
+        description: Total number of photos posted by this user
+      videosCount:
+        type: number
+        description: Total number of videos posted by this user
       createdAt:
         type: string
       updatedAt:

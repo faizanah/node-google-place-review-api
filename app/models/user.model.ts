@@ -68,7 +68,32 @@ module.exports = function(sequelize, DataTypes) {
             msg: 'Invalid status.'
           }
         }
-      }
+      },
+    reviewsCount: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    likesCount: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    dislikesCount: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    photosCount: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    videosCount: {
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }
   }, {
     indexes: [{unique: true, fields: ['email']}],
     timestamps: true,

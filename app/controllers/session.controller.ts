@@ -1,15 +1,13 @@
-import { ApplicationController } from './'
+let params = {body: {}, condition: {}, pick: {}}
 const passport = require('passport')
-let self
-export class SessionController extends ApplicationController {
+export class SessionController {
   constructor() {
-    self = super('User')
   }
   login(req, res) {
     req.checkBody('email', 'Enter a valid email address.').isEmail().isLength({ min: 3, max: 100 })
     req.checkBody('password', 'Password should be at least 6 chars long.').isLength({ min: 6 })
-    req.condition = { where: { email: req.body.email } }
-    return self._findOne(req, res, data => {
+    params.condition = { where: { email: req.body.email } }
+    return req.model('User').findOne(params, (data) => {
       if (data && data.authenticate(req.body.password)) {
         const token = data.generateToken()
         res.setHeader('x-access-token', token)
@@ -37,7 +35,7 @@ export class SessionController extends ApplicationController {
         } else
           res.status(422).send({success: false, errors: [{message: 'Unprocessable entity'}]})
       } else {
-        req.condition = {
+        params.condition = {
           where: {email: req.body.email},
           defaults: {
             fullName: auth.name.displayName,
@@ -45,7 +43,7 @@ export class SessionController extends ApplicationController {
             status: 'active'
           }
         }
-        self._findOrCreate(req, res, {}, (data, isCreated) => {
+        req.model('Place').findOrCreate(params, (data, isCreated) => {
           const token = data.generateToken()
           res.setHeader('x-access-token', token)
           return res.status(200).send({
