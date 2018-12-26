@@ -49,6 +49,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/Error"
+  /v1/places/{googlePlaceId_or_placeId}/reviews/:
     get:
       tags:
         - Review
@@ -58,7 +59,7 @@ paths:
       produces:
       - application/json
       parameters:
-        - name: googlePlaceId_or_PlaceId
+        - name: googlePlaceId_or_placeId
           description: It's a system place ID or Google Place ID
           in: path
           required: true

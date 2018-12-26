@@ -44,7 +44,7 @@ export class ReviewsController {
     })
   }
   list(req, res) {
-    params.condition = {where: {'$or': [{id: req.params.placeId}, {googlePlaceId: req.params.placeId}]}, include: [{ all: true }]}
+    params.condition = {where: {'$or': [{id: req.params.placeId}, {googlePlaceId: req.params.placeId}]}, include: [ 'attachments', 'createdBy' ]}
     req.model('Review').findAll(params)
   }
   show(req, res) {

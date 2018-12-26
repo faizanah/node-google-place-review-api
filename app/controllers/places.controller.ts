@@ -23,7 +23,7 @@ export class PlacesController {
     })
   }
   show(req, res) {
-    params.condition = {where: {'$or': [{id: req.params.id}, {googlePlaceId: req.params.id}]}, include: [{ all: true }]}
+    params.condition = {where: {'$or': [{id: req.params.id}, {googlePlaceId: req.params.id}]}, include: [ 'reviews' ]}
     return req.model('Place').findOne(params)
   }
   list(req, res) {

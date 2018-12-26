@@ -24,6 +24,6 @@ export function initRoutes(app, router) {
   apiRoute.get('/v1/users/',  users.list)
   apiRoute.route('/v1/me').get(users.me).post(users.update)
   apiRoute.route('/v1/reviews/:id').get(review.show)
-  apiRoute.route('/v1/places/:placeId/reviews').post(review.create)
+  apiRoute.route('/v1/places/:placeId/reviews').post(review.create).get(review.list)
   return apiRoute
 }
