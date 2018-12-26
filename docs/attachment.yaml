@@ -1,0 +1,31 @@
+definitions:
+  Attachment:
+    type: object
+    required:
+      - name
+      - file
+      - size
+      - type
+    properties:
+      id:
+        type: uuid
+        description: Unique uuid of attachment
+      file:
+        type: string
+        description: It's the url of the uploaded file
+      type:
+        type: string
+        description: File content type
+      name:
+        type: string
+        description: Name of uploaded file
+      size:
+        type: integer
+        description: Size of uploaded file in bytes
+      reviewId:
+        type: string
+        description: This key reference the review object
+      createdAt:
+        type: Date
+      updatedAt:
+        type: Date

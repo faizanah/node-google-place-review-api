@@ -99,11 +99,53 @@ paths:
         tags:
           - User
         summary: Fetch Logged in user details
-        description: Using your account credentials you need to create a session to receive a token to authenticate all other API calls.
+        description:
         security:
           - x-access-token: []
         produces:
         - application/json
+        responses:
+          "200":
+            description: OK
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  default: true
+                data:
+                  $ref: "#/definitions/User"
+                message:
+                  type: string
+                  description: Congrats! You have successfully login.
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/Error"
+      post:
+        tags:
+          - User
+        summary: Update current user
+        description:
+        security:
+          - x-access-token: []
+        produces:
+          - application/json
+        consumes:
+          - multipart/form-data
+        parameters:
+          - name: fullName
+            description: User full name
+            in: formData
+            type: string
+          - in: formData
+            name: avatar
+            type: file
+            description: The file to upload.
+          - in: formData
+            name: phone
+            type: string
+            description: User phone number
         responses:
           "200":
             description: OK

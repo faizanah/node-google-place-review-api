@@ -18,6 +18,12 @@ module.exports = function(sequelize, DataTypes) {
     address: {
       type: DataTypes.STRING(200)
     },
+    mapUrl: {
+      type: DataTypes.STRING
+    },
+    website: {
+      type: DataTypes.STRING(200)
+    },
     contact: {
       type: DataTypes.STRING(25)
     },
@@ -26,6 +32,10 @@ module.exports = function(sequelize, DataTypes) {
     },
     longitude: {
       type: DataTypes.DECIMAL
+    },
+    rating: {
+      type: DataTypes.FLOAT,
+      defaultValue: 0.0
     },
     reviewsCount: {
       allowNull: false,

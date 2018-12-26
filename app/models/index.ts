@@ -7,17 +7,13 @@ let db = {}
 fs
   .readdirSync(__dirname)
   .filter(function(file) {
-    console.log(file)
-    console.log(path.join(__dirname, file))
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js')
   })
   .forEach(function(file) {
-    console.log(file)
     const model = sequelize['import'](path.join(__dirname, file))
     db[model['name']] = model
   })
 Object.keys(db).forEach(function(modelName) {
-  console.log(modelName)
   if (db[modelName].associate) {
     db[modelName].associate(db)
   }
