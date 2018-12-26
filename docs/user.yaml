@@ -186,6 +186,21 @@ definitions:
       avatar:
         type: string
         description: Profile Image of user
+      reviewsCount:
+        type: number
+        description: Total number of reviews created by this user
+      likesCount:
+        type: number
+        description: Total number of liked reviews created by this user
+      dislikesCount:
+        type: number
+        description: Total number of disliked reviews created by this user
+      photosCount:
+        type: number
+        description: Total number of photos posted by this user
+      videosCount:
+        type: number
+        description: Total number of videos posted by this user
       createdAt:
         type: string
       updatedAt:

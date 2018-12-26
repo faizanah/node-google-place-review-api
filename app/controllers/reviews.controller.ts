@@ -27,7 +27,8 @@ export class ReviewsController {
                 file: req.file.location,
                 name: req.file.originalname,
                 size: req.file.size,
-                type: req.file.contentType
+                type: req.file.contentType,
+                userId: req.user.id
               }]
             }
             params.condition = {}

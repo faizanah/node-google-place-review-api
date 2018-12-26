@@ -55,6 +55,7 @@ module.exports = function(sequelize, DataTypes) {
     Review.belongsTo(models.Place , { as: 'place' , foreignKey: 'placeId' })
     Review.belongsTo(models.User , { as: 'createdBy', foreignKey: 'createdById' })
   }
+  // Place counter update
   Review.afterSave((review, options) => {
     const pId = review.placeId
     let query = 'select count(b.id) as reviewsCount, (select count(a.id) from reviews a where a.isLiked = true and a.placeId = "' + pId + '") as likesCount from reviews b where b.placeId = "' + pId + '" limit 1'
@@ -62,7 +63,17 @@ module.exports = function(sequelize, DataTypes) {
       console.log(results)
       query = 'UPDATE places SET reviewsCount = ' + results[0].reviewsCount + ', likesCount = ' + results[0]['likesCount'] + ', dislikesCount = ' + (results[0]['reviewsCount'] - results[0]['likesCount']) + ' WHERE places.id = "' + pId + '";'
       sequelize.query(query).spread((data, metadata) => {
-        console.log(data)
+      })
+    })
+  })
+// User counter update
+  Review.afterSave((review, options) => {
+    const userId = review.createdById
+    let query = 'select count(b.id) as reviewsCount, (select count(a.id) from reviews a where a.isLiked = true and a.createdById = "' + userId + '") as likesCount from reviews b where b.createdById = "' + userId + '" limit 1'
+    sequelize.query(query).spread((results, metadata) => {
+      console.log(results)
+      query = 'UPDATE users SET reviewsCount = ' + results[0].reviewsCount + ', likesCount = ' + results[0]['likesCount'] + ', dislikesCount = ' + (results[0]['reviewsCount'] - results[0]['likesCount']) + ' WHERE users.id = "' + userId + '";'
+      sequelize.query(query).spread((data, metadata) => {
       })
     })
   })

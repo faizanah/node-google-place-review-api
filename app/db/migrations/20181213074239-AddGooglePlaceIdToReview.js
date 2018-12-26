@@ -4,6 +4,6 @@ module.exports = {
   queryInterface.addColumn( 'reviews', 'googlePlaceId', Sequelize.STRING )
   },
   down: (queryInterface, Sequelize) => {
-    queryInterface.removeColumn( 'places', 'googlePlaceId')
+    queryInterface.removeColumn( 'reviews', 'googlePlaceId')
   }
 }
