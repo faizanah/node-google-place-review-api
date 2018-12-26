@@ -93,8 +93,6 @@ export function activerecord(req, res, next) {
     })
   }
   req.create = function(options, callback = null) {
-    console.log(JSON.stringify(this.body, null, 2))
-    console.log('Options is: ' + JSON.stringify(options, null, 2))
     let body = this.body
     this.getValidationResult().then(function (result) {
       if (result.isEmpty()) {
@@ -111,6 +109,23 @@ export function activerecord(req, res, next) {
           })
       } else
         res.handleError('Validation', result)
+    })
+  }
+  req.updateOne = function(options, callback = null) {
+    let body = this.body
+    this.getValidationResult().then(function (result) {
+      if (result.isEmpty()) {
+        body = _.pick(body, options.pick || [])
+        return db[params.tableName].find(options.condition || {}).then(result => {
+            return result.updateAttributes(body)
+          }).then(updatedResult => {
+            return res.ok(updatedResult, {message: 'Successfully updated'})
+          }).catch(error => {
+            res.handleError('Sequelize', error)
+          })
+      } else {
+        res.handleError('Validation', result)
+      }
     })
   }
   next()
