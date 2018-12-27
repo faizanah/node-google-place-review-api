@@ -24,4 +24,16 @@ export class UsersController {
       return req.model('User').updateOne(params)
     })
   }
+  show(req, res) {
+    params.condition = {where: {id: req.params.id}}
+    req.model('User').findAll(params)
+  }
+  reviews(req, res) {
+    params.condition = {where: {createdById: req.params.userId}, include: [ 'attachments' ]}
+    req.model('Review').findAll(params)
+  }
+  attachments(req, res) {
+    params.condition = {where: {userId: req.params.userId}}
+    req.model('Attachment').findAll(params)
+  }
 }

@@ -37,36 +37,8 @@ paths:
                     items:
                       $ref: "#/definitions/Review"
               pagination:
-                type: object
-                properties:
-                  total:
-                    type: number
-                    description: Total number of objects count
-                  pages:
-                    type: number
-                    description: Total number of pages
-                  perPage:
-                    type: number
-                    description: Total number of pages
-                  current:
-                    type: number
-                  next:
-                    type: number
-                  prev:
-                    type: number
-                  isFirst:
-                    type: boolean
-                  isLast:
-                    type: boolean
-                  links:
-                    type: object
-                    properties:
-                      prev:
-                        type: string
-                      current:
-                        type: string
-                      next:
-                        type: string
+                $ref: "#/definitions/Pagination"
+
               message:
                 type: string
                 description: Place successfully created/Reterived

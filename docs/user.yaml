@@ -164,6 +164,104 @@ paths:
             description: Error
             schema:
               $ref: "#/definitions/Error"
+  /v1/users/{userId}/reviews/:
+      get:
+        tags:
+          - User
+        summary: list of reviews of a give user
+        security:
+          - x-access-token: []
+        produces:
+        - application/json
+        parameters:
+          - name: userId
+            description: The User ID
+            in: path
+            required: true
+            type: string
+          - name: pagination
+            in: query
+            type: boolean
+            description: pagination default value is true
+          - name: page
+            in: query
+            type: string
+            description: Default page value is 1
+          - name: size
+            in: query
+            type: string
+            description: Default page size is 25
+        responses:
+          "200":
+            description: List of reviews of giver user with paginated result.
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  default: true
+                data:
+                 type: array
+                 items:
+                  $ref: "#/definitions/Review"
+                pagination:
+                  $ref: "#/definitions/Pagination"
+                message:
+                  type: string
+                  description: List of Reviews
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/Error"
+  /v1/users/{userId}/attachments/:
+    get:
+      tags:
+        - User
+      summary: list of attachments of a give user
+      security:
+        - x-access-token: []
+      produces:
+      - application/json
+      parameters:
+        - name: userId
+          description: The User ID
+          in: path
+          required: true
+          type: string
+        - name: pagination
+          in: query
+          type: boolean
+          description: pagination default value is true
+        - name: page
+          in: query
+          type: string
+          description: Default page value is 1
+        - name: size
+          in: query
+          type: string
+          description: Default page size is 25
+      responses:
+        "200":
+          description: List of attachments of giver user with paginated result.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+              data:
+               type: array
+               items:
+                $ref: "#/definitions/Attachment"
+              pagination:
+                $ref: "#/definitions/Pagination"
+              message:
+                type: string
+                description: List of Attachments
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
 definitions:
   User:
     type: object
