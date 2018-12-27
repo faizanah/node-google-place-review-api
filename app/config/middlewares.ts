@@ -87,7 +87,7 @@ export function activerecord(req, res, next) {
     const self = this
     this.getValidationResult().then((result) => {
       if (result.isEmpty()) {
-        let _pagination = (typeof(options['pagination']) !== 'undefined' && options['pagination'] === 'false') ? false : true
+        let _pagination = (typeof(self.query['pagination']) !== 'undefined' && self.query['pagination'] === 'false') ? false : true
         if (_pagination) {
           let page = parseInt(self.query.page) || 1
           self.query.page = page < 0 ? 1 : page
@@ -170,7 +170,7 @@ function pagination(data , req) {
     isLast: is_last,
     links: {
       prev: !is_first ? (requestUrl + '?page=' + ( page - 1 ) + '&size=' + limit) : null,
-      current: requestUrl,
+      current: parsedUrl.href,
       next: !is_last ? (requestUrl + '?page=' + ( page + 1 ) + '&size=' + limit) : null,
     }
   }
