@@ -21,7 +21,7 @@ paths:
           description: Default page size is 25
       responses:
         "200":
-          description: OK
+          description: A list of places with pagination
           schema:
             type: object
             properties:
