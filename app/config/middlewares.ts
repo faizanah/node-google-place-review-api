@@ -3,6 +3,7 @@ import * as winston from 'winston'
 import db from '../models/'
 import {environment} from './'
 import * as _ from 'lodash'
+import * as url from 'url'
 let params = {tableName: ''}
 const codesHandlingCodes = {
   'SequelizeUniqueConstraintError': 400,
@@ -83,10 +84,29 @@ export function activerecord(req, res, next) {
     })
   }
   req.findAll = function(options, callback = null){
+    const self = this
     this.getValidationResult().then((result) => {
       if (result.isEmpty()) {
-        return db[params.tableName].findAll(options.condition || {}).then(data => res.ok(data, {message: 'List of all ' + params.tableName}))
-          .catch(error => res.handleError('Sequelize', error))
+        let _pagination = (typeof(options['pagination']) !== 'undefined' && options['pagination'] === 'false') ? false : true
+        if (_pagination) {
+          let page = parseInt(self.query.page) || 1
+          self.query.page = page < 0 ? 1 : page
+          let limit = parseInt(self.query.size) || 25
+          self.query.size = (self.query.size < 0 || self.query.size > 100) ? 25 : limit
+          let offset = limit * (page - 1)
+          options.condition.limit = limit
+          options.condition.offset = offset
+          options.condition.order = [['createdAt', 'ASC']]
+        }
+        return db[params.tableName].findAndCountAll(options.condition || {}).then(data => {
+          // res.ok(data, {message: 'List of all ' + params.tableName})
+          if (typeof(callback) === 'function') {
+            callback(data)
+          } else if (_pagination)
+            res.status(200).send({success: true, data: data.rows, pagination: pagination(data , self),  message:  options.hasOwnProperty('message') ? options['message'] : params.tableName + ' successfully retrieved'})
+          else
+            res.status(200).send({success: true, data: data.rows,  message:  options.hasOwnProperty('message') ? options['message'] : params.tableName + ' successfully retrieved'})
+        }).catch(error => res.handleError('Sequelize', error))
       } else {
         res.handleError('Validation', result)
       }
@@ -130,7 +150,31 @@ export function activerecord(req, res, next) {
   }
   next()
 }
-
+function pagination(data , req) {
+  let parsedUrl = url.parse( req.protocol + '://' + req.get('host') + req.originalUrl)
+  const requestUrl = req.protocol + '://' + req.get('host') + parsedUrl.pathname
+  const page = req.query.page
+  const limit = req.query.size
+  const count =  data.count || data.length || 0
+  const pages = Math.ceil(count / limit)
+  const is_last = pages === page
+  const is_first = 1 === page
+  return {
+    total: count,
+    pages: pages,
+    perPage: limit,
+    current: page,
+    next: (is_last ? null : page + 1),
+    prev: (is_first ? null : page - 1),
+    isFirst: is_first,
+    isLast: is_last,
+    links: {
+      prev: !is_first ? (requestUrl + '?page=' + ( page - 1 ) + '&size=' + limit) : null,
+      current: requestUrl,
+      next: !is_last ? (requestUrl + '?page=' + ( page + 1 ) + '&size=' + limit) : null,
+    }
+  }
+}
 export function verifyJWT_MW(req, res, next) {
   winston.log('info', '--> Initialisations the verifyJWT_MW')
   if (req.headers && req.headers['x-access-token']) {
