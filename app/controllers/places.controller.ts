@@ -27,6 +27,12 @@ export class PlacesController {
     return req.model('Place').findOne(params)
   }
   list(req, res) {
+    if (typeof(req.query['search']) !== 'undefined' && req.query['search'] !== '') {
+      params.condition = { where: {
+          name: {$like: '%' + req.query.search + '%'}
+        }
+      }
+    }
     return req.model('Place').findAll(params)
   }
 }

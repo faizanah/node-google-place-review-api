@@ -3,7 +3,7 @@ import * as winston from 'winston'
 import * as boom from 'express-boom'
 import * as morgan from 'morgan'
 import * as cors from 'cors'
-import * as expressValidator from 'express-validator'
+const expressValidator = require('express-validator')
 import * as bodyParser from 'body-parser'
 import { Express } from 'express'
 import * as routes from './routes/'

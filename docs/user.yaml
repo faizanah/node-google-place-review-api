@@ -159,11 +159,45 @@ paths:
                   $ref: "#/definitions/User"
                 message:
                   type: string
-                  description: Congrats! You have successfully login.
+                  description: Successfully updated.
           default:
             description: Error
             schema:
               $ref: "#/definitions/Error"
+  /v1/users/{id}:
+    get:
+      tags:
+        - User
+      summary: Fetch user detail by id
+      description:
+      security:
+        - x-access-token: []
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          description: The User ID
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+              data:
+                $ref: "#/definitions/User"
+              message:
+                type: string
+                description: Successfully reterieved
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
   /v1/users/{userId}/reviews/:
       get:
         tags:

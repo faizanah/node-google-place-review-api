@@ -7,6 +7,9 @@ paths:
       produces:
       - application/json
       parameters:
+        - name: search
+          in: query
+          type: string
         - name: pagination
           in: query
           type: boolean
@@ -138,6 +141,41 @@ paths:
             description: Error
             schema:
               $ref: "#/definitions/Error"
+  /v1/places/{googlePlaceId_or_placeId}/reviews/:
+    get:
+      tags:
+        - Review
+      summary: list of reviews of a give place
+      security:
+        - x-access-token: []
+      produces:
+      - application/json
+      parameters:
+        - name: googlePlaceId_or_placeId
+          description: It's a system place ID or Google Place ID
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+              data:
+               type: array
+               items:
+                  $ref: "#/definitions/Review"
+              message:
+                type: string
+                description: List of Reviews
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
 definitions:
   Place:
     type: object
