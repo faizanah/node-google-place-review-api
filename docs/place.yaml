@@ -11,6 +11,10 @@ paths:
         - name: search
           in: query
           type: string
+        - name: topSort
+          in: query
+          type: string
+          description: It's value must be asc or desc.
         - name: pagination
           in: query
           type: boolean
