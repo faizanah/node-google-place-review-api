@@ -1538,7 +1538,7 @@
 }
 
 .swagger-ui .opblock.opblock-post .opblock-summary-method {
-  background: #205493;
+  background: #C1C0F4;
 }
 
 .swagger-ui .opblock.opblock-post .opblock-summary {
@@ -1577,7 +1577,7 @@
 }
 
 .swagger-ui .opblock.opblock-get .opblock-summary-method {
-  background: #34495E;
+  background: #15114B;
 }
 
 .swagger-ui .opblock.opblock-get .opblock-summary {
@@ -1625,7 +1625,8 @@
 
 .swagger-ui .topbar {
   padding: 8px 30px;
-  background-color: #2C3E50;
+  /*background-color: #2C3E50;*/
+  background-color: #15114B;
 }
 
 .swagger-ui .topbar .download-url-wrapper input[type=text] {
@@ -1652,21 +1653,21 @@
   -webkit-transition: all .4s;
   transition: all .4s;
   font-family: Open Sans, sans-serif;
-  color: #34495E;
+  color: #15114B;
 }
 
 .swagger-ui .info a:hover {
-  color: #34495E;
+  color: #15114B;
 }
 
 .swagger-ui .btn.authorize {
   line-height: 1;
   display: inline;
-  color: #336E7B;
-  border-color: #336E7B;
+  color: #15114B;
+  border-color: #15114B;
 }
 .swagger-ui .btn.authorize svg {
-  fill: #336E7B;
+  fill: #15114B;
 }
 .logo__img {
   content: url('/logo.png') !important;
