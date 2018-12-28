@@ -1360,10 +1360,11 @@
   font-size: 36px;
   margin: 0;
   font-family: Open Sans, sans-serif;
-  color: #3b4151
+  color: #15114B;
 }
 
 .swagger-ui .info .title small {
+  color: #15114B;
   font-size: 10px;
   position: relative;
   top: -5px;
@@ -1372,13 +1373,13 @@
   padding: 2px 4px;
   vertical-align: super;
   border-radius: 57px;
-  background: #7d8492
+  background: #C1C0F4
 }
 
 .swagger-ui .info .title small pre {
   margin: 0;
   font-family: Titillium Web, sans-serif;
-  color: #fff
+  color: #15114B;
 }
 
 .swagger-ui .auth-btn-wrapper {
