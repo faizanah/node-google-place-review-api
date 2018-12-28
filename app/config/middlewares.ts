@@ -95,16 +95,19 @@ export function activerecord(req, res, next) {
           let offset = limit * (page - 1)
           options.condition.limit = limit
           options.condition.offset = offset
-          options.condition.order = [['createdAt', 'ASC']]
+          if (typeof(options.condition['order']) !== 'undefined')
+            options.condition.order.push(['createdAt', 'ASC'])
+          else
+            options.condition.order = [['createdAt', 'ASC']]
         }
         return db[params.tableName].findAndCountAll(options.condition || {}).then(data => {
           // res.ok(data, {message: 'List of all ' + params.tableName})
           if (typeof(callback) === 'function') {
             callback(data)
           } else if (_pagination)
-            res.status(200).send({success: true, data: data.rows, pagination: pagination(data , self),  message:  options.hasOwnProperty('message') ? options['message'] : params.tableName + ' successfully retrieved'})
+            res.status(200).send({success: true, data: data.rows, pagination: pagination(data , self),  message:  options.hasOwnProperty('message') ? options['message'] : 'List of all ' + params.tableName})
           else
-            res.status(200).send({success: true, data: data.rows,  message:  options.hasOwnProperty('message') ? options['message'] : params.tableName + ' successfully retrieved'})
+            res.status(200).send({success: true, data: data.rows,  message:  options.hasOwnProperty('message') ? options['message'] : 'List of all ' + params.tableName})
         }).catch(error => res.handleError('Sequelize', error))
       } else {
         res.handleError('Validation', result)
