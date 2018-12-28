@@ -27,6 +27,7 @@ export class PlacesController {
     return req.model('Place').findOne(params)
   }
   list(req, res) {
+    params.condition = {}
     if (typeof(req.query['search']) !== 'undefined' && req.query['search'] !== '')
       params.condition = { where: {name: {$like: '%' + req.query.search + '%'} }}
     if (typeof(req.query['topSort']) !== 'undefined' && req.query['topSort'] !== '')

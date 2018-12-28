@@ -4,6 +4,7 @@ import db from '../models/'
 import {environment} from './'
 import * as _ from 'lodash'
 import * as url from 'url'
+const querystring = require('querystring')
 let params = {tableName: ''}
 const codesHandlingCodes = {
   'SequelizeUniqueConstraintError': 400,
@@ -156,12 +157,28 @@ export function activerecord(req, res, next) {
 function pagination(data , req) {
   let parsedUrl = url.parse( req.protocol + '://' + req.get('host') + req.originalUrl)
   const requestUrl = req.protocol + '://' + req.get('host') + parsedUrl.pathname
+  let parsedQs = querystring.parse(parsedUrl.query)
+  let links = {
+    prev: null,
+    current: parsedUrl.href,
+    next: null
+  }
   const page = req.query.page
   const limit = req.query.size
   const count =  data.count || data.length || 0
   const pages = Math.ceil(count / limit)
   const is_last = pages === page
   const is_first = 1 === page
+  if (!is_first) {
+    parsedQs.page =  page - 1
+    parsedQs.size =  limit
+    links.prev = requestUrl + '?' + querystring.stringify(parsedQs)
+  }
+  if (!is_last) {
+    parsedQs.page =  page + 1
+    parsedQs.size =  limit
+    links.next = requestUrl + '?' + querystring.stringify(parsedQs)
+  }
   return {
     total: count,
     pages: pages,
@@ -171,11 +188,7 @@ function pagination(data , req) {
     prev: (is_first ? null : page - 1),
     isFirst: is_first,
     isLast: is_last,
-    links: {
-      prev: !is_first ? (requestUrl + '?page=' + ( page - 1 ) + '&size=' + limit) : null,
-      current: parsedUrl.href,
-      next: !is_last ? (requestUrl + '?page=' + ( page + 1 ) + '&size=' + limit) : null,
-    }
+    links: links
   }
 }
 export function verifyJWT_MW(req, res, next) {
