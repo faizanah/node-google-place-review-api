@@ -49,17 +49,18 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/Error"
+  v1/reviews/{id}:
     get:
       tags:
         - Review
-      summary: list of reviews of a give place
+      summary: Find a review
       security:
         - x-access-token: []
       produces:
       - application/json
       parameters:
-        - name: googlePlaceId_or_PlaceId
-          description: It's a system place ID or Google Place ID
+        - name: id
+          description: Review ID
           in: path
           required: true
           type: string
@@ -73,9 +74,7 @@ paths:
                 type: boolean
                 default: true
               data:
-               type: array
-               items:
-                  $ref: "#/definitions/Review"
+                $ref: "#/definitions/Review"
               message:
                 type: string
                 description: List of Riews

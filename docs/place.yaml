@@ -7,9 +7,25 @@ paths:
       description: Returns a list of the available Places
       produces:
       - application/json
+      parameters:
+        - name: search
+          in: query
+          type: string
+        - name: pagination
+          in: query
+          type: boolean
+          description: pagination default value is true
+        - name: page
+          in: query
+          type: string
+          description: Default page value is 1
+        - name: size
+          in: query
+          type: string
+          description: Default page size is 25
       responses:
         "200":
-          description: OK
+          description: A list of places with pagination
           schema:
             type: object
             properties:
@@ -24,6 +40,9 @@ paths:
                     type: array
                     items:
                       $ref: "#/definitions/Review"
+              pagination:
+                $ref: "#/definitions/Pagination"
+
               message:
                 type: string
                 description: Place successfully created/Reterived
@@ -123,6 +142,41 @@ paths:
             description: Error
             schema:
               $ref: "#/definitions/Error"
+  /v1/places/{googlePlaceId_or_placeId}/reviews/:
+    get:
+      tags:
+        - Review
+      summary: list of reviews of a give place
+      security:
+        - x-access-token: []
+      produces:
+      - application/json
+      parameters:
+        - name: googlePlaceId_or_placeId
+          description: It's a system place ID or Google Place ID
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+              data:
+               type: array
+               items:
+                  $ref: "#/definitions/Review"
+              message:
+                type: string
+                description: List of Reviews
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
 definitions:
   Place:
     type: object

@@ -27,7 +27,8 @@ export class ReviewsController {
                 file: req.file.location,
                 name: req.file.originalname,
                 size: req.file.size,
-                type: req.file.contentType
+                type: req.file.contentType,
+                userId: req.user.id
               }]
             }
             params.condition = {}
@@ -43,7 +44,7 @@ export class ReviewsController {
     })
   }
   list(req, res) {
-    params.condition = {where: {'$or': [{id: req.params.placeId}, {googlePlaceId: req.params.placeId}]}}
+    params.condition = {where: {'$or': [{id: req.params.placeId}, {googlePlaceId: req.params.placeId}]}, include: [ 'attachments', 'createdBy' ]}
     req.model('Review').findAll(params)
   }
   show(req, res) {

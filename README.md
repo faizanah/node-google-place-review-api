@@ -33,7 +33,6 @@
 
 ## Relational Schema
 ![divider](app/db/relational-schemas/26-12-2018-schema.png)
-
 ## Introduction
 
 Our app directory consists on the following folders

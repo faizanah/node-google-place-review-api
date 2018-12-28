@@ -3,7 +3,7 @@ module.exports = {
    development: {
      DATABASE_URL:  process.env.DATABASE_URL,
      secret:  process.env.SECRET,
-     port: 3000,
+     port: process.env.PORT || 3000,
      mailer: {
        from: process.env.MAILER_FROM,
        service: process.env.MAILER_SERVICE || 'SendGrid',
@@ -15,6 +15,12 @@ module.exports = {
      facebookAuth: {
        clientID: process.env.FACEBOOK_APP_ID,
        clientSecret:  process.env.FACEBOOK_APP_SECRET,
+     },
+     aws: {
+       accessKey: process.env.AWS_ACCESS_KEY,
+       secretKey: process.env.AWS_SECRET_KEY,
+       s3Bucket: process.env.S3_BUCKET,
+       region: process.env.AWS_REGION
      },
      host: 'http://localhost:3000'
    },
@@ -35,9 +41,16 @@ module.exports = {
          user: process.env.MAILER_USER,
          password: process.env.MAILER_PASSWORD
        }
-     }, facebookAuth: {
+     },
+     facebookAuth: {
        clientID: process.env.FACEBOOK_APP_ID,
        clientSecret:  process.env.FACEBOOK_APP_SECRET,
-     }
+     },
+     aws: {
+       accessKey: process.env.AWS_ACCESS_KEY,
+       secretKey: process.env.AWS_SECRET_KEY,
+       s3Bucket: process.env.S3_BUCKET,
+       region: process.env.AWS_REGION
+     },
    }
  }

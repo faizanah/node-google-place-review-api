@@ -21,9 +21,14 @@ export function initRoutes(app, router) {
   apiRoute.route('/v1/places/').get(place.list).post(place.create)
   apiRoute.route('/v1/places/:id').get(place.show)
   apiRoute.route('*').all(verifyJWT_MW)
+  apiRoute.route('/v1/places/:id').get(place.show)
+  apiRoute.route('/v1/places/').get(place.list).post(place.create)
   apiRoute.get('/v1/users/',  users.list)
   apiRoute.route('/v1/me').get(users.me).post(users.update)
+  apiRoute.route('/v1/users/:id').get(users.show)
+  apiRoute.route('/v1/users/:userId/reviews').get(users.reviews)
+  apiRoute.route('/v1/users/:userId/attachments').get(users.attachments)
   apiRoute.route('/v1/reviews/:id').get(review.show)
-  apiRoute.route('/v1/places/:placeId/reviews').post(review.create)
+  apiRoute.route('/v1/places/:placeId/reviews').post(review.create).get(review.list)
   return apiRoute
 }
