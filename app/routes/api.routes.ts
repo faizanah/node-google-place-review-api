@@ -30,6 +30,7 @@ export function initRoutes(app, router) {
   apiRoute.route('/v1/users/:userId/reviews').get(users.reviews)
   apiRoute.route('/v1/users/:userId/attachments').get(users.attachments)
   apiRoute.route('/v1/reviews/:id').get(review.show)
+  apiRoute.route('/v1/reviews/:reviewId/report').post(review.report)
   apiRoute.route('/v1/places/:placeId/reviews').post(review.create).get(review.list)
   apiRoute.route('/v1/issues').get(issues.list)
   return apiRoute

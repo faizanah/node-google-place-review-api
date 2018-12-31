@@ -19,11 +19,15 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
-      created_at: {
+      admin_user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }

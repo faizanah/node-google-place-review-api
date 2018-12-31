@@ -51,4 +51,18 @@ export class ReviewsController {
     params.condition = {where: {id: req.params.id, createdById: req.user.id}, include: [{ all: true }]}
     return req.model('Review').findOne(params)
   }
+  report(req, res) {
+    req.checkParams('reviewId', 'Enter a valid review ID.').notEmpty()
+    req.check('issueId').notEmpty().withMessage('Issue id can\'t be blank')
+    params.condition = {where: {id: req.params.reviewId}}
+    return req.model('Review').findOne(params, (review => {
+      if (review) {
+        req.body.reviewId = review.id
+        req.body.userId =  req.user.id
+        req.model('ReviewReport').create({pick: ['userId', 'issueId', 'reviewId']})
+      } else {
+        res.notFound('Review not fount with this id.')
+      }
+    }))
+  }
 }

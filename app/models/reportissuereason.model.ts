@@ -31,5 +31,8 @@ module.exports = function(sequelize, DataTypes) {
     freezeTableName: true,
     tableName: 'report_issue_reasons'
   })
+  ReportIssueReason.associate = function(models) {
+    ReportIssueReason.hasMany(models.ReviewReport , { as: 'review_reports' , foreignKey: 'issueId',  onDelete: 'cascade' })
+  }
   return ReportIssueReason
 }
