@@ -32,6 +32,10 @@ export class PlacesController {
       params.condition = { where: {name: {$like: '%' + req.query.search + '%'} }}
     if (typeof(req.query['topSort']) !== 'undefined' && req.query['topSort'] !== '')
       params.condition['order'] = [ ['reviewsCount', req.query['topSort'] ]]
+    if (typeof(params.condition['order']) !== 'undefined')
+      params.condition['order'].push(['createdAt', 'ASC'])
+    else
+      params.condition['order'] = [['createdAt', 'ASC']]
     return req.model('Place').findAll(params)
   }
 }

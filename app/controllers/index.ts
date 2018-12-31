@@ -4,8 +4,9 @@ import { SessionController } from './session.controller'
 import { PasswordController } from './password.controller'
 import { ReviewsController } from './reviews.controller'
 import { PlacesController } from './places.controller'
+import { IssuesController } from './issues.controller'
 
-export {UsersController, RegistrationController, SessionController, PasswordController, ReviewsController, PlacesController}
+export {UsersController, RegistrationController, SessionController, PasswordController, ReviewsController, PlacesController, IssuesController}
 
 // var fs = require('fs');
 // function getUrl(url) {

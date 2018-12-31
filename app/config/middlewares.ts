@@ -96,10 +96,10 @@ export function activerecord(req, res, next) {
           let offset = limit * (page - 1)
           options.condition.limit = limit
           options.condition.offset = offset
-          if (typeof(options.condition['order']) !== 'undefined')
-            options.condition.order.push(['createdAt', 'ASC'])
-          else
-            options.condition.order = [['createdAt', 'ASC']]
+          // if (typeof(options.condition['order']) !== 'undefined')
+          //   options.condition.order.push(['createdAt', 'ASC'])
+          // else
+          //   options.condition.order = [['createdAt', 'ASC']]
         }
         return db[params.tableName].findAndCountAll(options.condition || {}).then(data => {
           // res.ok(data, {message: 'List of all ' + params.tableName})
