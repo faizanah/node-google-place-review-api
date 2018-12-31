@@ -48,7 +48,7 @@ export class ReviewsController {
     req.model('Review').findAll(params)
   }
   show(req, res) {
-    params.condition = {where: {id: req.params.id, createdById: req.user.id}, include: [{ all: true }]}
+    params.condition = {where: {id: req.params.id}, include: [{ all: true }]}
     return req.model('Review').findOne(params)
   }
   report(req, res) {
