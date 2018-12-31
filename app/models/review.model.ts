@@ -41,13 +41,16 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       type: DataTypes.STRING,
       unique: true
+    },
+    deletedAt: {
+      type: DataTypes.DATE
     }
   }, {
-
     // indexes: [{unique: true, fields: ['createdById', 'placeId']}],
     timestamps: true,
     freezeTableName: true,
-    tableName: 'reviews'
+    tableName: 'reviews',
+    paranoid: true
 
   })
   Review.associate = function(models) {

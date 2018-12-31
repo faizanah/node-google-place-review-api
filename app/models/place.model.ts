@@ -31,7 +31,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DECIMAL
     },
     longitude: {
-      type: DataTypes.DECIMAL
+      type: DataTypes.DECIMAL,
     },
     rating: {
       type: DataTypes.FLOAT,
