@@ -15,7 +15,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(50),
       allowNull: false
     },
-    type: {
+    contentType: {
       type: DataTypes.STRING(20),
       allowNull: false
     },
@@ -53,7 +53,7 @@ module.exports = function(sequelize, DataTypes) {
   // User counter update
   Attachment.afterSave((attachment, options) => {
     const userId = attachment.userId
-    let query = 'SELECT count(a.id) as photosCount, (select count(b.id) from attachments b where b.type LIKE \'video/%\' and b.userId = "' + userId + '") as videosCount FROM attachments a WHERE a.type LIKE \'image/%\' and a.userId = "' + userId + '";'
+    let query = 'SELECT count(a.id) as photosCount, (select count(b.id) from attachments b where b.contentType LIKE \'video/%\' and b.userId = "' + userId + '") as videosCount FROM attachments a WHERE a.contentType LIKE \'image/%\' and a.userId = "' + userId + '";'
     sequelize.query(query).spread((results, metadata) => {
       query = 'UPDATE users SET photosCount = ' + results[0].photosCount + ', videosCount = ' + results[0].videosCount + ' WHERE users.id = "' + userId + '";'
       sequelize.query(query).spread((data, metadata) => {
