@@ -46,5 +46,10 @@ module.exports = (sequelize, DataTypes) => {
     ReviewReport.belongsTo(models.User , { as: 'user', foreignKey: 'userId' })
     ReviewReport.belongsTo(models.ReportIssueReason , { as: 'issue', foreignKey: 'issueId' })
   }
+  ReviewReport.afterSave((report, options) => {
+    let query = 'UPDATE `report_issue_reasons` SET `issuesCount` = COALESCE(`issuesCount`, 0) + 1 WHERE `report_issue_reasons`.`id` = ' + report.issueId
+    sequelize.query(query).spread((data, metadata) => {
+    })
+  })
   return ReviewReport
 }
