@@ -14,7 +14,7 @@ module.exports = {
       type: Sequelize.INTEGER,
       defaultValue: 0
     }),
-    queryInterface.removeColumn('reviews', 'type', 'contentType')
+    queryInterface.renameColumn('attachments', 'type', 'contentType')
   ];
   },
 
@@ -23,7 +23,7 @@ module.exports = {
      queryInterface.removeColumn('reviews', 'deletedAt'),
      queryInterface.removeColumn('users', 'reportReviewsCount'),
      queryInterface.removeColumn('places', 'reportReviewsCount'),
-     queryInterface.removeColumn('reviews', 'contentType', 'type')
+     queryInterface.renameColumn('attachments', 'contentType', 'type')
    ];
   }
 };
