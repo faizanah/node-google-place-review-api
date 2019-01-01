@@ -1,4 +1,5 @@
 'use strict'
+import * as faker from 'faker'
 module.exports = function(sequelize, DataTypes) {
   const Place = sequelize.define('Place', {
     id: {
@@ -52,6 +53,9 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },
+    photos: {
+      type: DataTypes.TEXT
+    },
   }, {
     indexes: [{unique: true, fields: ['googlePlaceId']}],
     timestamps: true,
@@ -61,5 +65,20 @@ module.exports = function(sequelize, DataTypes) {
   Place.associate = function(models) {
     Place.hasMany(models.Review , { as: 'reviews' , foreignKey: 'placeId',  onDelete: 'cascade' })
   }
+  Place.beforeSave((place, opts) => {
+    place.name = faker.company.companyName()
+    place.contact = faker.phone.phoneNumber()
+    place.website = faker.internet.url()
+    place.address = faker.address.streetAddress()
+    place.latitude = faker.address.latitude()
+    place.longitude = faker.address.longitude()
+    place.photos = JSON.stringify([{
+      file: faker.image.technics()
+    },
+      {
+      file: faker.image.food()
+    }])
+    return sequelize.Promise.resolve(place)
+  })
   return Place
 }

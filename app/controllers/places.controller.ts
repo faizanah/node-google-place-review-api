@@ -2,25 +2,8 @@ let params = {body: {}, condition: {}, pick: {}}
 export class PlacesController {
   constructor() {}
   create(req, res) {
-    params.condition = {
-      where: {googlePlaceId: req.body.googlePlaceId},
-      defaults: {
-        name: req.body.name,
-        contact: req.body.contact,
-        address: req.body.address,
-        longitude: req.body.longitude,
-        latitude: req.body.latitude
-      }
-    }
-    req.model('Place').findOrCreate(params, (place, isNew) => {
-      if (!isNew) {
-        place.update(params.condition['defaults']).then(() => {
-          res.ok(place)
-        })
-      }else {
-        res.ok(place)
-      }
-    })
+    params.condition = {where: {googlePlaceId: req.body.googlePlaceId}, defaults: {}}
+    req.model('Place').findOrCreate(params)
   }
   show(req, res) {
     params.condition = {where: {'$or': [{id: req.params.id}, {googlePlaceId: req.params.id}]}, include: [ {model: req.db['Review'], as: 'reviews', include: ['createdBy', 'attachments']} ]}

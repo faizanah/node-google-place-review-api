@@ -69,28 +69,10 @@ paths:
           type: object
           required:
             - googlePlaceId
-            - name
-            - contact
-            - address
           properties:
             googlePlaceId:
               type: string
               description: Google Place ID
-            name:
-              type: string
-              description: Place Name
-            contact:
-              type: string
-              description: Place contact information
-            address:
-              type: string
-              description: Place address details
-            latitude:
-              type: decimal
-              description: Place latitude
-            longitude:
-              type: decimal
-              description: Place longitude
       responses:
         "201":
           description: Created
