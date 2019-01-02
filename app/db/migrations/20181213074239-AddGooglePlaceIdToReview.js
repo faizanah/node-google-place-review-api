@@ -1,9 +1,9 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-  queryInterface.addColumn( 'reviews', 'googlePlaceId', Sequelize.STRING )
+  return queryInterface.addColumn( 'reviews', 'googlePlaceId', Sequelize.STRING )
   },
   down: (queryInterface, Sequelize) => {
-    queryInterface.removeColumn( 'reviews', 'googlePlaceId')
+    return queryInterface.removeColumn( 'reviews', 'googlePlaceId')
   }
 }

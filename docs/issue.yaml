@@ -1,0 +1,50 @@
+paths:
+  /v1/issues/:
+    get:
+      tags:
+        - Issue
+      summary: Get a list of Issues
+      description: Returns a list of the available Issues
+      security:
+        - x-access-token: []
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: A list of issues with pagination
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                default: true
+              data:
+                type: array
+                items:
+                  $ref: "#/definitions/Issue"
+              pagination:
+                $ref: "#/definitions/Pagination"
+              message:
+                type: string
+                description: Place successfully created/Reterived
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  Issue:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Unique id of issue
+      issue:
+        type: string
+        description: issue body
+      position:
+        type: integer
+        description: Issue ordering
+      createdAt:
+        type: string
+      updatedAt:
+        type: string

@@ -13,7 +13,7 @@ definitions:
       file:
         type: string
         description: It's the url of the uploaded file
-      type:
+      contentType:
         type: string
         description: File content type
       name:

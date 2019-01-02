@@ -27,7 +27,7 @@ export class ReviewsController {
                 file: req.file.location,
                 name: req.file.originalname,
                 size: req.file.size,
-                type: req.file.contentType,
+                contentType: req.file.contentType,
                 userId: req.user.id
               }]
             }
@@ -48,7 +48,21 @@ export class ReviewsController {
     req.model('Review').findAll(params)
   }
   show(req, res) {
-    params.condition = {where: {id: req.params.id, createdById: req.user.id}, include: [{ all: true }]}
+    params.condition = {where: {id: req.params.id}, include: [{ all: true }]}
     return req.model('Review').findOne(params)
+  }
+  report(req, res) {
+    req.checkParams('reviewId', 'Enter a valid review ID.').notEmpty()
+    req.check('issueId').notEmpty().withMessage('Issue id can\'t be blank')
+    params.condition = {where: {id: req.params.reviewId}}
+    return req.model('Review').findOne(params, (review => {
+      if (review) {
+        req.body.reviewId = review.id
+        req.body.userId =  req.user.id
+        req.model('ReviewReport').create({pick: ['userId', 'issueId', 'reviewId']})
+      } else {
+        res.notFound('Review not fount with this id.')
+      }
+    }))
   }
 }

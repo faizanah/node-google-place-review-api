@@ -49,7 +49,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/Error"
-  v1/reviews/{id}:
+  /v1/reviews/{id}:
     get:
       tags:
         - Review
@@ -82,6 +82,48 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/Error"
+  /v1/reviews/{reviewId}/report:
+      post:
+        tags:
+          - Review
+        summary: Report a review
+        security:
+          - x-access-token: []
+        produces:
+        - application/json
+        parameters:
+          - name: reviewId
+            description: Review ID
+            in: path
+            required: true
+            type: string
+          - in: body
+            name: issue
+            required: true
+            schema:
+              type: object
+              required:
+                - issueId
+              properties:
+                issueId:
+                  type: integer
+                  description: Issue Id
+        responses:
+          "200":
+            description: OK
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  default: true
+                message:
+                  type: string
+                  description: Successfully submitted.
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/Error"
 definitions:
   Review:
     type: object

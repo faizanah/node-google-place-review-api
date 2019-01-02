@@ -3,13 +3,20 @@ paths:
     get:
       tags:
         - Place
-      summary: List of all places
+      summary: Get Places Information
+      description: Returns a list of the available Places
       produces:
       - application/json
+      security:
+        - x-access-token: []
       parameters:
         - name: search
           in: query
           type: string
+        - name: topSort
+          in: query
+          type: string
+          description: It's value must be asc or desc.
         - name: pagination
           in: query
           type: boolean
@@ -64,28 +71,10 @@ paths:
           type: object
           required:
             - googlePlaceId
-            - name
-            - contact
-            - address
           properties:
             googlePlaceId:
               type: string
               description: Google Place ID
-            name:
-              type: string
-              description: Place Name
-            contact:
-              type: string
-              description: Place contact information
-            address:
-              type: string
-              description: Place address details
-            latitude:
-              type: decimal
-              description: Place latitude
-            longitude:
-              type: decimal
-              description: Place longitude
       responses:
         "201":
           description: Created
@@ -203,6 +192,15 @@ definitions:
       longitude:
         type: decimal
         description: Place longitude
+      rating:
+        type: float
+        description: Google place rating
+      website:
+        type: string
+        description: Place website address
+      mapUrl:
+        type: string
+        description: Place google map url
       reviewsCount:
         type: number
         description: Total number of reviews associated with this place

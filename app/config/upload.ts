@@ -1,8 +1,7 @@
 import * as multer from 'multer'
 import * as aws from 'aws-sdk'
 import * as multerS3 from 'multer-s3'
-import {environment} from '../config'
-const { parse } = require('querystring')
+import {environment} from './'
 aws.config.update({
   secretAccessKey: environment.aws.secretKey,
   accessKeyId: environment.aws.accessKey,
@@ -24,7 +23,6 @@ export function uploader (_file, res) {
         cb(null, { fieldName: file.fieldname })
       },
       key: function (req, file, cb) {
-        console.log(file)
         const newFileName = Date.now() + '-' + file.originalname
         const fullPath = _file  + newFileName
         cb(null, fullPath)

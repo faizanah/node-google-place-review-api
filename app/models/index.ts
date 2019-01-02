@@ -1,8 +1,10 @@
+require('dotenv').config()
+import {environment} from '../config'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as Sequelize from 'sequelize'
 const basename = path.basename(module.filename)
-import { sequelize } from '../config/sequelize'
+const sequelize = new Sequelize(environment.DATABASE_URL || process.env.DATABASE_URL)
 let db = {}
 fs
   .readdirSync(__dirname)
