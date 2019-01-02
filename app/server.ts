@@ -6,7 +6,7 @@ import * as cors from 'cors'
 const expressValidator = require('express-validator')
 import * as bodyParser from 'body-parser'
 import { Express } from 'express'
-import * as routes from './routes/'
+import { Routes }  from './routes/'
 import {environment, ORM, responses} from './config/'
 import db from './models/'
 const PORT: number = environment.port || 3000
@@ -14,11 +14,12 @@ const PORT: number = environment.port || 3000
 export class Server {
 
   private app: Express
+  public routes: Routes = new Routes()
 
   constructor() {
     this.app = express()
     this.config()
-    this.routes()
+    this.initSequelize()
   }
   private config(): void {
     this.app.use(cors({
@@ -37,11 +38,11 @@ export class Server {
     this.app.use(this.locals)
     this.app.use(express.static('public'))
   }
-  private routes(): void {
-    const self = this.app
+  private initSequelize(): void {
+    const self = this
     db['sequelize'].sync().then(function(){
-      self.listen(PORT, () => {
-        routes.initRoutes(self)
+      self.getApp().listen(PORT, () => {
+        self.routes.init(self.getApp())
         winston.log('info', '--> Server successfully started at port %d', PORT)
       })
     })

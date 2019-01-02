@@ -1,4 +1,4 @@
-import {createJWToken} from '../config/auth'
+import {createToken} from '../config/auth'
 import { Mailer, environment } from '../config/'
 import * as bcrypt from 'bcrypt'
 import * as crypto from 'crypto'
@@ -108,7 +108,7 @@ module.exports = function(sequelize, DataTypes) {
   })
 
   User.prototype.generateToken = function generateToken() {
-    return createJWToken({ email: this.email, id: this.id})
+    return createToken({ email: this.email, id: this.id})
   }
 
   User.prototype.sendResetPasswordInstructions = function sendResetPasswordInstructions() {

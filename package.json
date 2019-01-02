@@ -39,6 +39,7 @@
     "aws-sdk": "^2.376.0",
     "bcrypt": "^3.0.2",
     "body-parser": "~1.17.0",
+    "camelcase": "^5.0.0",
     "cors": "~2.8.1",
     "cross-env": "~3.2.3",
     "crypto": "^1.0.1",
