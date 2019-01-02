@@ -7,6 +7,8 @@ paths:
       description: Returns a list of the available Places
       produces:
       - application/json
+      security:
+        - x-access-token: []
       parameters:
         - name: search
           in: query

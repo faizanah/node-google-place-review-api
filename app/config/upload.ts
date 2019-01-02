@@ -23,7 +23,6 @@ export function uploader (_file, res) {
         cb(null, { fieldName: file.fieldname })
       },
       key: function (req, file, cb) {
-        console.log(file)
         const newFileName = Date.now() + '-' + file.originalname
         const fullPath = _file  + newFileName
         cb(null, fullPath)

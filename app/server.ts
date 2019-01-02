@@ -7,18 +7,20 @@ const expressValidator = require('express-validator')
 import * as bodyParser from 'body-parser'
 import { Express } from 'express'
 import * as routes from './routes/'
-import {environment} from './config/'
-import { activerecord } from './config/middlewares'
+import {environment, ORM, responses} from './config/'
 import db from './models/'
 const PORT: number = environment.port || 3000
-// Swagger definition
+
 export class Server {
 
   private app: Express
 
   constructor() {
     this.app = express()
-    // Express middleware
+    this.config()
+    this.routes()
+  }
+  private config(): void {
     this.app.use(cors({
       optionsSuccessStatus: 200,
       origin: true,
@@ -28,11 +30,14 @@ export class Server {
     }))
     this.app.use(bodyParser.json())
     this.app.use(bodyParser.urlencoded({extended: true}))
+    this.app.use(expressValidator())
     this.app.use(boom())
     this.app.use(morgan('combined'))
-    this.app.use(expressValidator())
-    this.app.use(activerecord)
+    this.app.use(responses)
+    this.app.use(this.locals)
     this.app.use(express.static('public'))
+  }
+  private routes(): void {
     const self = this.app
     db['sequelize'].sync().then(function(){
       self.listen(PORT, () => {
@@ -40,6 +45,15 @@ export class Server {
         winston.log('info', '--> Server successfully started at port %d', PORT)
       })
     })
+  }
+
+  private locals(req, res, next) {
+    req.env = environment
+    req.db = db
+    req.model = (table: string) => {
+      return new ORM(table, req, res, next)
+    }
+    next()
   }
 
   getApp() {

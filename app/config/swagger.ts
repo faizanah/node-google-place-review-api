@@ -1,9 +1,9 @@
 import {environment} from './'
-const swaggerJSDoc = require('swagger-jsdoc')
-const swaggerUi = require('swagger-ui-express')
 const { name, version, description } = require('../../package.json')
-const fs = require('fs')
-const path = require('path')
+import * as swaggerJSDoc from 'swagger-jsdoc'
+import * as swaggerUi from 'swagger-ui-express'
+import * as fs from 'fs'
+import * as path from 'path'
 const css = fs.readFileSync(path.resolve(__dirname, '../../public/swagger-ui.css'), 'utf8')
 
 const swaggerDefinition = {
