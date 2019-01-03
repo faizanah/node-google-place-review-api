@@ -15,7 +15,7 @@ export function verify(token) {
 }
 export function createToken(payload) {
   return jwt.sign(payload, environment.secret, {
-    expiresIn: 3600,
+    expiresIn: '1y',
     algorithm: 'HS256'
   })
 }
