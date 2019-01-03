@@ -44,11 +44,11 @@ export class ReviewsController {
     })
   }
   list(req, res) {
-    params.condition = {where: {'$or': [{id: req.params.placeId}, {googlePlaceId: req.params.placeId}]}, include: [ 'attachments', 'createdBy' ]}
+    params.condition = {where: {'$or': [{placeId: req.params.placeId}, {googlePlaceId: req.params.placeId}]}, include: [ 'attachments', 'createdBy' ]}
     req.model('Review').findAll(params)
   }
   show(req, res) {
-    params.condition = {where: {id: req.params.id}, include: [{ all: true }]}
+    params.condition = {where: {id: req.params.id}, include: [ 'attachments', 'createdBy', 'place' ]}
     return req.model('Review').findOne(params)
   }
   report(req, res) {
