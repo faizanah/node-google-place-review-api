@@ -2,7 +2,6 @@ import * as _ from 'lodash'
 import db from '../models'
 import * as url from 'url'
 import * as querystring from 'querystring'
-let params = {tableName: ''}
 export class ORM {
   constructor(
     private tableName: string,
@@ -13,8 +12,6 @@ export class ORM {
   }
   create = (options, callback = null) => {
     const self = this
-    console.log(JSON.stringify( this.req.body, null, 2))
-    console.log('Options is: ' + JSON.stringify(options, null, 2))
     let body = self.req.body
     self.req.getValidationResult().then(function(result) {
       if (result.isEmpty()) {
