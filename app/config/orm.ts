@@ -65,13 +65,14 @@ export class ORM {
   updateOne = (options, callback = null) => {
     const self = this
     let body = self.req.body
-    this.req.getValidationResult().then(function (result) {
+    options.condition.returning = true
+    self.req.getValidationResult().then(function (result) {
       if (result.isEmpty()) {
         body = _.pick(body, options.pick || [])
-        return db[self.tableName].find(options.condition || {}).then(result => {
+        return db[self.tableName].findOne(options.condition || {}).then(result => {
           return result.updateAttributes(body)
         }).then(updatedResult => {
-          return this.res.ok(updatedResult, {message: 'Successfully updated'})
+          return self.res.ok(updatedResult, {message: 'Successfully updated'})
         }).catch(error => {
           self.res.handleError('Sequelize', error)
         })

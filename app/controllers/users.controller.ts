@@ -11,18 +11,18 @@ export class UsersController {
     res.ok(req.user)
   }
   update(req, res) {
-    // const storeDir = 'uploads/users/'
-    // const upload = uploader(storeDir, res).single('avatar')
-    // upload(req, res, function(err) {
-    //   if (err) {
-    //     return res.status(422).send({success: false, errors: err })
-    //   }
-    //   if (req.file) {
-    //     req.body.avatar = req.file.location
-    //   }
+    const storeDir = 'uploads/users/'
+    const upload = uploader(storeDir, res).single('avatar')
+    upload(req, res, function(err) {
+      if (err) {
+        return res.status(422).send({success: false, errors: err })
+      }
+      if (req.file) {
+        req.body.avatar = req.file.location
+      }
       params.condition = {where: {id: req.user.id}}
       return req.model('User').updateOne(params)
-    // })
+    })
   }
   show(req, res) {
     params.condition = {where: {id: req.params.id}}
