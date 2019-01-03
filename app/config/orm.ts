@@ -19,7 +19,7 @@ export class ORM {
     self.req.getValidationResult().then(function(result) {
       if (result.isEmpty()) {
         body = _.pick(_.cloneDeep(body), options.pick || [])
-        return db[self.tableName].create(body, options.condition || {})
+        return db[self.tableName].create(body, options.include || {})
           .then(data => {
             if (typeof(callback) === 'function')
               callback(data)

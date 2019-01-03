@@ -15,6 +15,7 @@ export class ReviewsController {
             return res.status(422).send({success: false, errors: err })
           }
           if (req.file) {
+            params.condition = {}
             req.check('body').notEmpty().withMessage('Review Body can\'t be blank').isLength({min: 3, max: 140}).withMessage('Review Body must be between 3 to 140 characters.')
             req.check('isLiked').isBoolean().withMessage('Review liked must be boolean value.')
             req.body = {
@@ -31,7 +32,7 @@ export class ReviewsController {
                 userId: req.user.id
               }]
             }
-            params.condition = {}
+
             params.include = {include: ['attachments']}
             req.model('Review').create(params)
           } else {
