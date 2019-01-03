@@ -3,8 +3,12 @@ import * as winston from 'winston'
 import * as boom from 'express-boom'
 import * as morgan from 'morgan'
 import * as cors from 'cors'
+import * as path from 'path'
+import * as session from 'express-session'
+import * as cookieParser from 'cookie-parser'
 const expressValidator = require('express-validator')
 import * as bodyParser from 'body-parser'
+import * as flash from 'express-flash'
 import { Express } from 'express'
 import { Routes }  from './routes/'
 import {environment, ORM, responses} from './config/'
@@ -32,6 +36,11 @@ export class Server {
     this.app.use(bodyParser.json())
     this.app.use(bodyParser.urlencoded({extended: true}))
     this.app.use(expressValidator())
+    this.app.use(cookieParser())
+    this.app.use(session({ secret: environment.secret }))
+    this.app.use(flash())
+    this.app.set('views', path.join(__dirname, '../', 'views'))
+    this.app.set('view engine', 'pug')
     this.app.use(boom())
     this.app.use(morgan('combined'))
     this.app.use(responses)
