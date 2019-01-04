@@ -16,6 +16,7 @@
     "MySQL"
   ],
   "scripts": {
+    "gulp": "gulp",
     "build": "gulp build",
     "doc": "gulp generate:doc",
     "start": "gulp watch",
