@@ -28,8 +28,7 @@
     "prettify": "tsfmt -r --baseDir ./src",
     "db:migrate": "./node_modules/.bin/sequelize db:migrate",
     "db:rollback": "./node_modules/.bin/sequelize db:migrate:undo",
-    "generate:migration": "./node_modules/.bin/sequelize migration:create",
-    "preinstall": "npm i -g node-gyp && node-gyp clean"
+    "generate:migration": "./node_modules/.bin/sequelize migration:create"
   },
   "lint-staged": {
     "app/**/*.ts": [
