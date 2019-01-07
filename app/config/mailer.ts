@@ -1,13 +1,13 @@
 import * as hbs from 'nodemailer-express-handlebars'
 import * as nodemailer from 'nodemailer'
 import * as path from 'path'
-import { environment } from './'
+import { ENV } from './'
 class Mailer {
   constructor() {
   }
 
   send = (mailOptions) => {
-    mailOptions.from = mailOptions.from || environment.mailer.from
+    mailOptions.from = mailOptions.from || ENV.mailer.from
     this.transporter().sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log(error)
@@ -20,7 +20,7 @@ class Mailer {
   }
 
   transporter = () => {
-    const smtpTransport  = nodemailer.createTransport(this.getConnection())
+    const smtpTransport = nodemailer.createTransport(this.getConnection())
     const handlebarsOptions = {
       viewEngine: 'handlebars',
       viewPath: path.resolve('./views/mailer/'),
@@ -31,10 +31,10 @@ class Mailer {
   }
   getConnection = () => {
     return {
-      service: environment.mailer.service,
+      service: ENV.mailer.service,
       auth: {
-        user: environment.mailer.smtp.user,
-        pass: environment.mailer.smtp.password
+        user: ENV.mailer.smtp.user,
+        pass: ENV.mailer.smtp.password
       }
     }
   }
