@@ -1,0 +1,60 @@
+
+// generice variables //
+$darkGrey: #4d4d4d;
+$cloudBurst: #24265D;
+$lightGrey: #f0f0f0;
+
+$white: #ffffff;
+$offWhite: #f8f8f8;
+$black: #000;
+$font: "rundanormal";
+$fontBold: "rundabold";
+$fontMedium: "rundamedium";
+$error: #f00;
+
+*{
+    font-family: $font;
+     margin: 0px;
+    padding: 0px;
+}
+
+// background size cover //
+@mixin cover-background($cover) {
+    -webkit-background-size:$cover;
+    -moz-background-size:$cover;
+    -o-background-size:$cover;
+    background-size:$cover;
+}
+// all transitions //
+@mixin transitions($duration) {
+    -webkit-transition: all $duration; /* Safari */
+    transition: all $duration;
+}
+// placeholder color //
+@mixin placeholder($color,$fontSize){
+    &::-webkit-input-placeholder {
+        color:$color;
+        font-size: $fontSize;
+    }
+    &::-moz-placeholder {
+        color:$color;
+        font-size: $fontSize;
+    }
+    &:-ms-input-placeholder {
+        color:$color;
+        font-size: $fontSize;
+    }
+    &:-moz-placeholder {
+        color:$color;
+        font-size: $fontSize;
+    }
+}
+// border radius //
+@mixin border-radius($radius){
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    border-radius: $radius;
+}
+body {
+    background: #fafafa;
+}

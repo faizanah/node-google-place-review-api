@@ -40,12 +40,12 @@ export class Server {
     this.app.use(session({ secret: ENV.secret }))
     this.app.use(flash())
     this.app.set('views', path.join(__dirname, '../', 'views'))
+    this.app.use(express.static(path.join(__dirname, '../', 'public')))
     this.app.set('view engine', 'pug')
     this.app.use(boom())
     this.app.use(morgan('combined'))
     this.app.use(responses)
     this.app.use(this.locals)
-    this.app.use(express.static('public'))
   }
   private initSequelize(): void {
     const self = this
