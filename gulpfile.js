@@ -19,6 +19,7 @@ const TSLINT = "tslint";
 const COMPILE_TYPESCRIPT = "compile:typescript";
 const COPY_STATIC_FILES = "copy:static";
 const BUILD = "build";
+const PROD_BUILD = "prod-build";
 const GENERATE_DOC = "generate:doc";
 const PRETEST = "pretest";
 const RUN_TESTS = "run:tests";
@@ -42,6 +43,11 @@ gulp.task(CLEAN_BUILD, function(callback) {
 // Removes the ./coverage directory with all its content.
 gulp.task(CLEAN_COVERAGE, function(callback) {
     rimraf("./coverage", callback);
+});
+
+// Set NODE_ENV to 'production'
+gulp.task('env:prod', function () {
+  process.env.NODE_ENV = 'production';
 });
 
 // // Removes the ./docs directory with all its content.
@@ -76,6 +82,10 @@ gulp.task(COMPILE_TYPESCRIPT, function() {
 // Runs all required steps for the build in sequence.
 gulp.task(BUILD, function(callback) {
     runSequence(CLEAN_BUILD, TSLINT, COMPILE_TYPESCRIPT, COPY_STATIC_FILES, callback);
+});
+
+gulp.task(PROD_BUILD, function(callback) {
+  runSequence('env:prod',CLEAN_BUILD, TSLINT, COMPILE_TYPESCRIPT, COPY_STATIC_FILES, callback);
 });
 
 // // Generates a documentation based on the code comments in the *.ts files.
@@ -147,4 +157,15 @@ gulp.task("watch", [BUILD], function() {
         tasks: [BUILD],
         nodeArgs: ['--inspect']
     });
+});
+
+// Runs the build task and starts the server every time changes are detected.
+gulp.task("prod", [PROD_BUILD], function() {
+  return nodemon({
+      ext: "ts js json html yaml",
+      script: "build/server.js",
+      watch: ["app/*", "test/*", "docs/*"],
+      tasks: [PROD_BUILD],
+      nodeArgs: ['--inspect']
+  });
 });
