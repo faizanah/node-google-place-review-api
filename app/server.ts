@@ -37,7 +37,7 @@ export class Server {
     this.app.use(bodyParser.urlencoded({ extended: true }))
     this.app.use(expressValidator())
     this.app.use(cookieParser())
-    this.app.use(session({ secret: environment.secret }))
+    this.app.use(session({ secret: ENV.secret }))
     this.app.use(flash())
     this.app.set('views', path.join(__dirname, '../', 'views'))
     this.app.set('view engine', 'pug')
