@@ -111,7 +111,7 @@
     "extendify": "~1.0.0"
   },
   "engines": {
-    "node": "8.12.0"
+    "node": ">=8.12.0"
   },
   "license": "SEE LICENSE IN LICENSE.md"
 }
