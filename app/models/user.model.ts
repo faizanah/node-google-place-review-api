@@ -1,5 +1,5 @@
-import {createToken} from '../config/auth'
-import { Mailer, environment } from '../config/'
+import { createToken } from '../config/auth'
+import { Mailer, ENV } from '../config/'
 import * as bcrypt from 'bcrypt'
 import * as crypto from 'crypto'
 const mailer = new Mailer()
@@ -57,18 +57,18 @@ module.exports = function(sequelize, DataTypes) {
         }
       }
     },
-      status: {
-        allowNull: false,
-        type:   DataTypes.ENUM,
-        values: ['pending' , 'active'],
-        defaultValue: 'pending',
-        validate: {
-          isIn: {
-            args: [['pending' , 'active']],
-            msg: 'Invalid status.'
-          }
+    status: {
+      allowNull: false,
+      type: DataTypes.ENUM,
+      values: ['pending', 'active'],
+      defaultValue: 'pending',
+      validate: {
+        isIn: {
+          args: [['pending', 'active']],
+          msg: 'Invalid status.'
         }
-      },
+      }
+    },
     reviewsCount: {
       allowNull: false,
       type: DataTypes.INTEGER,
@@ -95,11 +95,11 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 0
     }
   }, {
-    indexes: [{unique: true, fields: ['email']}],
-    timestamps: true,
-    freezeTableName: true,
-    tableName: 'users'
-  })
+      indexes: [{ unique: true, fields: ['email'] }],
+      timestamps: true,
+      freezeTableName: true,
+      tableName: 'users'
+    })
 
   User.beforeSave((user, options) => {
     if (user.changed('password')) {
@@ -108,28 +108,28 @@ module.exports = function(sequelize, DataTypes) {
   })
 
   User.prototype.generateToken = function generateToken() {
-    return createToken({ email: this.email, id: this.id})
+    return createToken({ email: this.email, id: this.id })
   }
 
   User.prototype.sendResetPasswordInstructions = function sendResetPasswordInstructions() {
     const user = this
-    crypto.randomBytes(20, function (err, buf) {
+    crypto.randomBytes(20, function(err, buf) {
       user.updateAttributes({
         resetToken: buf.toString('hex'),
         resetTokenExpireAt: Date.now() + 3600000,
         resetTokenSentAt: Date.now()
-      }).then(function (result) {
+      }).then(function(result) {
         const options = {
           to: result.email,
           subject: 'Reset Password Instructions ✔',
           template: 'forgot-password-email',
           context: {
-            url: `${environment.host}/password/reset/` + result.resetToken,
+            url: `${ENV.host}/password/reset/` + result.resetToken,
             user: result
           }
         }
         return mailer.send(options)
-      }).catch(function (error) {
+      }).catch(function(error) {
         console.log(JSON.stringify(error, null, 2))
       })
     })
@@ -142,7 +142,7 @@ module.exports = function(sequelize, DataTypes) {
       return false
   }
 
-  User.prototype.toJSON =  function () {
+  User.prototype.toJSON = function() {
     let values = Object.assign({}, this.get())
 
     delete values.password

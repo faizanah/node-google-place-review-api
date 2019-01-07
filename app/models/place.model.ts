@@ -1,5 +1,7 @@
 'use strict'
-import * as faker from 'faker'
+import { ENV } from '../config/'
+import * as GooglePlaces from 'googleplaces'
+const places = new GooglePlaces(ENV.googleApiKey, 'json')
 module.exports = function(sequelize, DataTypes) {
   const Place = sequelize.define('Place', {
     id: {
@@ -57,28 +59,45 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.TEXT
     },
   }, {
-    indexes: [{unique: true, fields: ['googlePlaceId']}],
-    timestamps: true,
-    freezeTableName: true,
-    tableName: 'places'
-  })
+      indexes: [{ unique: true, fields: ['googlePlaceId'] }],
+      timestamps: true,
+      freezeTableName: true,
+      tableName: 'places'
+    })
   Place.associate = function(models) {
-    Place.hasMany(models.Review , { as: 'reviews' , foreignKey: 'placeId',  onDelete: 'cascade' })
+    Place.hasMany(models.Review, { as: 'reviews', foreignKey: 'placeId', onDelete: 'cascade' })
   }
-  Place.beforeSave((place, opts) => {
-    place.name = faker.company.companyName()
-    place.contact = faker.phone.phoneNumber()
-    place.website = faker.internet.url()
-    place.address = faker.address.streetAddress()
-    place.latitude = faker.address.latitude()
-    place.longitude = faker.address.longitude()
-    place.photos = JSON.stringify([{
-      file: faker.image.technics()
-    },
-      {
-      file: faker.image.food()
-    }])
-    return sequelize.Promise.resolve(place)
+  Place.beforeCreate(function(place, options, cb) {
+    let photoArray = []
+    return new Promise((resolve, reject) => {
+      places.placeDetailsRequest({ placeid: place.googlePlaceId }, function(error, response) {
+        if (error)
+          reject(error)
+        const result = response.result
+        place.name = result.name
+        place.contact = result.international_phone_number
+        place.rating = result.rating
+        place.mapUrl = result.url
+        place.website = result.website
+        place.address = result.formatted_address
+        place.latitude = result.geometry.location.lat
+        place.longitude = result.geometry.location.lng
+        const photoSize = result.photos.length
+        if (photoSize > 0) {
+          const size = photoSize > 5 ? 5 : photoSize
+          for (let i = 0; i < size; i++) {
+            places.imageFetch({ photoreference: result.photos[i].photo_reference }, (error, response) => {
+              photoArray.push(response)
+              if (size === i + 1) {
+                place.photos = JSON.stringify(photoArray)
+                resolve(place)
+              }
+            })
+          }
+        } else
+          resolve(place)
+      })
+    })
   })
   return Place
 }

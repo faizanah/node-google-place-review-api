@@ -1,4 +1,4 @@
-import {environment} from './'
+import { ENV } from './'
 const { name, version, description } = require('../../package.json')
 import * as swaggerJSDoc from 'swagger-jsdoc'
 import * as swaggerUi from 'swagger-ui-express'
@@ -16,7 +16,7 @@ const swaggerDefinition = {
       url: 'https://www.virtualforce.io/support',
       email: 'support@virtualforce.io'
     },
-    host: environment.host,
+    host: ENV.host,
     basePath: '/v1'
   },
   securityDefinitions: {
@@ -27,15 +27,15 @@ const swaggerDefinition = {
     }
   },
   tags: [{
-      'name': 'Session',
-      'description': ''
-    }, {
-      'name': 'Registration',
-      'description': ''
-    }, {
-      'name': 'User',
-      'description': ''
-    }],
+    'name': 'Session',
+    'description': ''
+  }, {
+    'name': 'Registration',
+    'description': ''
+  }, {
+    'name': 'User',
+    'description': ''
+  }],
   schemes: ['https', 'http'],
   consumes: ['application/json'],
   produces: ['application/json']
@@ -48,7 +48,7 @@ const custom = {
   explorer: true,
   customCss: css,
   customSiteTitle: 'IMFO',
-  customfavIcon:  '/logo.png'
+  customfavIcon: '/logo.png'
 }
 const swaggerSpec = swaggerJSDoc(options)
 const swagger = swaggerUi.serve

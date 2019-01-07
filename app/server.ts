@@ -6,10 +6,10 @@ import * as cors from 'cors'
 const expressValidator = require('express-validator')
 import * as bodyParser from 'body-parser'
 import { Express } from 'express'
-import { Routes }  from './routes/'
-import {environment, ORM, responses} from './config/'
+import { Routes } from './routes/'
+import { ENV, ORM, responses } from './config/'
 import db from './models/'
-const PORT: number = environment.port || 3000
+const PORT: number = ENV.port || 3000
 
 export class Server {
 
@@ -30,7 +30,7 @@ export class Server {
       exposedHeaders: ['x-access-token']
     }))
     this.app.use(bodyParser.json())
-    this.app.use(bodyParser.urlencoded({extended: true}))
+    this.app.use(bodyParser.urlencoded({ extended: true }))
     this.app.use(expressValidator())
     this.app.use(boom())
     this.app.use(morgan('combined'))
@@ -40,7 +40,7 @@ export class Server {
   }
   private initSequelize(): void {
     const self = this
-    db['sequelize'].sync().then(function(){
+    db['sequelize'].sync().then(function() {
       self.getApp().listen(PORT, () => {
         self.routes.init(self.getApp())
         winston.log('info', '--> Server successfully started at port %d', PORT)
@@ -49,7 +49,7 @@ export class Server {
   }
 
   private locals(req, res, next) {
-    req.env = environment
+    req.env = ENV
     req.db = db
     req.model = (table: string) => {
       return new ORM(table, req, res, next)
