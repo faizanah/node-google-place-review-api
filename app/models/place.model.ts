@@ -87,7 +87,7 @@ module.exports = function(sequelize, DataTypes) {
           const size = photoSize > 5 ? 5 : photoSize
           for (let i = 0; i < size; i++) {
             places.imageFetch({ photoreference: result.photos[i].photo_reference }, (error, response) => {
-              photoArray.push(response)
+              photoArray.push({ file: response })
               if (size === i + 1) {
                 place.photos = JSON.stringify(photoArray)
                 resolve(place)
