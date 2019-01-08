@@ -1,9 +1,11 @@
 extends layout
-
 block content
   form(method='POST')
-    legend Forgot Password
-    .form-group
-      label(for='email') Email
-      input.form-control(type='text', name='email', autofocus)
-    button.btn.btn-primary(type='submit') Reset Password
+    .form-visual
+      .form-holder
+        h1 Forgot Password
+        .form-row
+          input.form-control.input-field(type='text', name='email', placeholder='Enter Your Email', autofocus)
+          span.error Enter a valid email address
+        .form-row.btn-row
+          button.submit-btn(type="submit") Reset Password

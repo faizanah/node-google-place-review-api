@@ -1,20 +1,23 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')
-    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js')
-    script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js')
+    meta(charset="utf-8")
+    title IMFO Snap, Search, Discover
+    // Le HTML5 shim, for IE6-8 support of HTML5 elements
+    //if lt IE 9
+      script(src="http://html5shim.googlecode.com/svn/trunk/html5.js")
+    //if lt IE 8
+      script(src="http://html5shim.googlecode.com/svn/trunk/html5.js")
+    //if lt IE 7
+      script(src="http://html5shim.googlecode.com/svn/trunk/html5.js")
+    // view port
+    link(rel='stylesheet', href='/css/all.css')
+    meta(name='viewport' content='windth=device-width, initial-scale=1')
   body
-    .navbar.navbar-inverse.navbar-static-top(role='navigation')
-      .container
-        .navbar-header
-          button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
-            span.sr-only Toggle navigation
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-          a.navbar-brand(href='/') IMFO
+    .top-bar
+      .bar-logo
+        img(src="/logo.png" alt="IMFO Logo")
+        span IMFO
     .container
       if messages.error
         .alert.alert-danger

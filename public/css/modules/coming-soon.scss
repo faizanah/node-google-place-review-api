@@ -1,0 +1,59 @@
+.coming-soon {
+    background: url(../images/comingsoon.jpg) 0px 0px no-repeat;
+    @include cover-background(cover);
+}
+.content-container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 50px 15px 0;
+}
+.insta-logo {
+    text-align: center;
+    padding: 0 0 30px;
+    img {
+        display: inline-block;
+        max-width: 220px;
+    }
+}
+.logo {
+    text-align: center;
+    padding: 0 0 30px;
+    img {
+        display: inline-block;
+     } 
+}
+.copy-text {
+    text-align: center;
+    h1 {
+        text-transform: uppercase;
+        font-size: 50px;
+        font-family: $fontBold;
+        color: $white;
+        padding: 0px;
+        margin: 0px;
+        font-weight: normal;
+        @include tablet {
+            font-size: 70px; 
+        }
+    }
+    h2 {
+        font-size: 25px;
+        font-family: $fontMedium;
+        color: $white;
+        padding: 0px 0 70px;
+        margin: 0px;
+        font-weight: normal;
+        @include tablet {
+            font-size: 35px; 
+        }
+    }
+    p {
+        font-size: 25px;
+        font-family: $fontMedium;
+        color: $white;
+        padding: 0px 0 70px;
+        margin: 0px;
+        line-height: 36px;
+        font-weight: normal;
+    }
+}

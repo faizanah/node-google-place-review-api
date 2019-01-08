@@ -1,0 +1,28 @@
+$minWidthMobile:767px;
+$minWidthiPad:768px;
+$minWidthDesktop:992px;
+
+
+
+
+// mobile screens breakpoint mixin //
+@mixin mobile {
+  @media only screen and (min-width: #{$minWidthMobile}) {
+    @content;
+  }
+}
+
+// tablet width breakpoint mixin //
+@mixin tablet {
+    @media only screen and (min-width: #{$minWidthiPad}) {
+      @content;
+    }
+}
+
+// desktop width breakpoint mixin //
+@mixin desktop {
+    @media only screen and (min-width: #{$minWidthDesktop}) {
+      @content;
+    }
+}
+

@@ -1,12 +1,20 @@
 extends layout
 block content
   form(method='POST')
-    legend Reset Password
-    .form-group
-      label(for='password') New Password
-      input.form-control(type='password', name='password', value='', placeholder='New password', autofocus=true)
-    .form-group
-      label(for='confirm') Confirm Password
-      input.form-control(type='password', name='confirm', value='', placeholder='Confirm password')
-    .form-group
-      button.btn.btn-primary(type='submit') Update Password
+    .form-visual
+      .form-holder
+        h1 Please enter your new password.
+        ul.instructions
+          li Must be at least 8 characters in length
+          li Must have at least 1 letter
+          li Must have at least 1 number
+        .form-row
+          input.input-field(type='password', name='password', value='', placeholder='New password', autofocus=true)
+        .form-row
+          input.input-field(type='password', name='confirm', value='', placeholder='Confirm password')
+        .form-row
+          span.send-again
+            a(href="/forgot", style={'text-decoration': 'none !important'}) Forgot Password?
+        .form-row.btn-row
+          button.submit-btn(type="submit") Update Password
+
