@@ -26,7 +26,7 @@
     "tslint": "gulp tslint",
     "precommit": "lint-staged",
     "prettify": "tsfmt -r --baseDir ./src",
-    "preprod": "npm install",
+    "prestart": "npm install",
     "db:migrate": "./node_modules/.bin/sequelize db:migrate",
     "db:rollback": "./node_modules/.bin/sequelize db:migrate:undo",
     "generate:migration": "./node_modules/.bin/sequelize migration:create"
