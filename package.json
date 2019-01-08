@@ -18,7 +18,7 @@
   "scripts": {
     "gulp": "gulp",
     "build": "gulp build",
-    "prod": "npm install && gulp prod",
+    "prod": "glup watch",
     "doc": "gulp generate:doc",
     "start": "gulp watch",
     "dev": "gulp watch",
@@ -26,6 +26,7 @@
     "tslint": "gulp tslint",
     "precommit": "lint-staged",
     "prettify": "tsfmt -r --baseDir ./src",
+    "preprod": "npm install",
     "db:migrate": "./node_modules/.bin/sequelize db:migrate",
     "db:rollback": "./node_modules/.bin/sequelize db:migrate:undo",
     "generate:migration": "./node_modules/.bin/sequelize migration:create"
@@ -110,7 +111,7 @@
     "extendify": "~1.0.0"
   },
   "engines": {
-    "node": "8.12.0"
+    "node": ">=8.12.0"
   },
   "license": "SEE LICENSE IN LICENSE.md"
 }
