@@ -101,6 +101,10 @@ module.exports = function(sequelize, DataTypes) {
       tableName: 'users'
     })
 
+  User.associate = function(models) {
+    User.hasMany(models.ReviewReport, { as: 'review_reports', foreignKey: 'userId', onDelete: 'cascade' })
+  }
+
   User.beforeSave((user, options) => {
     if (user.changed('password')) {
       user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null)

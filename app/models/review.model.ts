@@ -46,17 +46,18 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DATE
     }
   }, {
-    // indexes: [{unique: true, fields: ['createdById', 'placeId']}],
-    timestamps: true,
-    freezeTableName: true,
-    tableName: 'reviews',
-    paranoid: true
+      // indexes: [{unique: true, fields: ['createdById', 'placeId']}],
+      timestamps: true,
+      freezeTableName: true,
+      tableName: 'reviews',
+      paranoid: true
 
-  })
+    })
   Review.associate = function(models) {
-    Review.hasMany(models.Attachment , { as: 'attachments' , foreignKey: 'reviewId',  onDelete: 'cascade' })
-    Review.belongsTo(models.Place , { as: 'place' , foreignKey: 'placeId' })
-    Review.belongsTo(models.User , { as: 'createdBy', foreignKey: 'createdById' })
+    Review.hasMany(models.Attachment, { as: 'attachments', foreignKey: 'reviewId', onDelete: 'cascade' })
+    Review.belongsTo(models.Place, { as: 'place', foreignKey: 'placeId' })
+    Review.belongsTo(models.User, { as: 'createdBy', foreignKey: 'createdById' })
+    Review.hasMany(models.ReviewReport, { as: 'review_reports', foreignKey: 'reviewId', onDelete: 'cascade' })
   }
   // Place counter update
   Review.afterSave((review, options) => {
@@ -69,7 +70,7 @@ module.exports = function(sequelize, DataTypes) {
       })
     })
   })
-// User counter update
+  // User counter update
   Review.afterSave((review, options) => {
     const userId = review.createdById
     let query = 'select count(b.id) as reviewsCount, (select count(a.id) from reviews a where a.isLiked = true and a.createdById = "' + userId + '") as likesCount from reviews b where b.createdById = "' + userId + '" limit 1'
@@ -80,7 +81,7 @@ module.exports = function(sequelize, DataTypes) {
       })
     })
   })
-  Review.afterCreate = function (review) {
+  Review.afterCreate = function(review) {
     return review.reload()
   }
   return Review

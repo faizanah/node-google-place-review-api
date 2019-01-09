@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@types/multer": "^1.3.7",
+    "@types/geojson": "*",
     "@types/handlebars": "4.0.33",
     "aws-sdk": "^2.376.0",
     "bcrypt": "3.0.2",

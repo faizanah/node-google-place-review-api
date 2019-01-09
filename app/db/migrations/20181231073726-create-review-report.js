@@ -10,15 +10,15 @@ module.exports = {
       },
       issueId: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER(11)
       },
       reviewId: {
         allowNull: false,
-        type: Sequelize.STRING(36)
+        type: Sequelize.UUID
       },
       userId: {
         allowNull: false,
-        type: Sequelize.STRING(36)
+        type: Sequelize.UUID
       },
       status: {
         type: Sequelize.ENUM('pending', 'reviewed', 'approved', 'rejected'),
