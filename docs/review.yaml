@@ -22,6 +22,10 @@ paths:
           required: true
           description: The file to upload.
         - in: formData
+          name: thumbnail
+          type: file
+          description: The thumbnail of the uploaded attachment.
+        - in: formData
           name: isLiked
           type: boolean
           required: true

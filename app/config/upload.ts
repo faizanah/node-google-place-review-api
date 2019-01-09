@@ -9,7 +9,7 @@ aws.config.update({
 })
 const s3 = new aws.S3()
 const limits = {
-  files: 1, // allow only 1 file per request
+  files: 2, // allow only 1 file per request
   fileSize: 1024 * 1024 * 100, // 10 MB (max file size)
 }
 export function uploader(_file, res) {
@@ -35,7 +35,7 @@ export function uploader(_file, res) {
       if (typeArray[0] === 'video' || typeArray[0] === 'image') {
         return cb(null, true)
       } else {
-        cb(null, false)
+        return cb(new Error('Only images and videos files are allowed!'), false)
       }
     }
   })

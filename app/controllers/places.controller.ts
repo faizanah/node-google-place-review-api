@@ -6,7 +6,10 @@ export class PlacesController {
     req.model('Place').findOrCreate(params)
   }
   show(req, res) {
-    params.condition = { where: { '$or': [{ id: req.params.id }, { googlePlaceId: req.params.id }] }, include: [{ model: req.db['Review'], as: 'reviews', include: ['createdBy', 'attachments'] }] }
+    params.condition = {
+      where: { '$or': [{ id: req.params.id }, { googlePlaceId: req.params.id }] },
+      include: [{ model: req.db['Review'], as: 'reviews', include: [{ model: req.db['User'], as: 'createdBy' }, { model: req.db['Attachment'], as: 'attachments', include: ['thumbnails'] }] }]
+    }
     return req.model('Place').findOne(params)
   }
   list(req, res) {
