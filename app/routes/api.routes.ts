@@ -1,7 +1,7 @@
 import * as winston from 'winston'
 import * as controller from '../controllers'
 import { requiresAuth, swagger, swaggerDocs } from '../config/'
-
+const passportConf = require('../config/passport')
 export function initRoutes(app, router) {
   winston.log('info', '--> Initialisations the routes')
   let apiRoute = router
@@ -16,7 +16,7 @@ export function initRoutes(app, router) {
   apiRoute.route('/v1/places/').get(controller.places.list)
   apiRoute.route('/v1/places/:id').get(controller.places.show)
   apiRoute.route('/v1/places/:id').get(controller.places.show)
-  apiRoute.get('/v1/users/',  controller.users.list)
+  apiRoute.get('/v1/users/', controller.users.list)
   apiRoute.route('/v1/me').get(controller.users.me).patch(controller.users.update)
   apiRoute.route('/v1/users/:id').get(controller.users.show)
   apiRoute.route('/v1/users/:userId/reviews').get(controller.users.reviews)

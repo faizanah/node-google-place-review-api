@@ -25,6 +25,8 @@ definitions:
       reviewId:
         type: string
         description: This key reference the review object
+      thumbnails:
+        type: array
       createdAt:
         type: Date
       updatedAt:

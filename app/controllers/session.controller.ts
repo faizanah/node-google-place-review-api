@@ -1,5 +1,5 @@
-let params = {body: {}, condition: {}, pick: {}}
-const passport = require('passport')
+let params = { body: {}, condition: {}, pick: {} }
+import * as passport from 'passport'
 export class SessionController {
   constructor() {
   }
@@ -26,31 +26,32 @@ export class SessionController {
     })
   }
   facebook(req, res) {
-    req.checkBody('email', 'Enter a valid email address.').isEmail().isLength({ min: 3, max: 100 })
-    passport.authenticate('facebook-token',  (err, auth, info) => {
+    passport.authenticate('facebook-token', (err, auth, info) => {
       if (err) {
         if (err.oauthError) {
           const oauthError = JSON.parse(err.oauthError.data)
-          res.status(422).send({success: false, errors: [{message: oauthError.error.message}]})
+          res.status(422).send({ success: false, errors: [{ message: oauthError.error.message }] })
         } else
-          res.status(422).send({success: false, errors: [{message: 'Unprocessable entity'}]})
+          res.status(422).send({ success: false, errors: [{ message: 'Unprocessable entity' }] })
       } else {
         params.condition = {
-          where: {email: req.body.email},
+          where: { uid: auth.id, provider: 'facebook' },
           defaults: {
-            fullName: auth.name.displayName,
-            password: '1234zxcv',
-            status: 'active'
+            auth: JSON.stringify(auth),
+            accessToken: req.params.access_token
           }
         }
-        req.model('Place').findOrCreate(params, (data, isCreated) => {
-          const token = data.generateToken()
-          res.setHeader('x-access-token', token)
-          return res.status(200).send({
-            success: true,
-            data: data,
-            token: token,
-            message: 'Congratulations! Your account has been successfully authorized with facebook.'
+        req.model('Identity').findOrCreate(params, (data, isCreated) => {
+          params.condition = { where: { id: data.userId } }
+          return req.model('User').findOne(params, (data) => {
+            const token = data.generateToken()
+            res.setHeader('x-access-token', token)
+            return res.status(200).send({
+              success: true,
+              data: data,
+              token: token,
+              message: 'Congratulations! Your account has been successfully authorized with facebook.'
+            })
           })
         })
       }

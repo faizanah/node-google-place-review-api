@@ -48,6 +48,47 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/Error"
+  /v1/auth/facebook:
+      post:
+        tags:
+          - Social
+        summary: create a new user account through facebbok
+        produces:
+          - application/json
+        parameters:
+        - in: body
+          name: sign up
+          description: It enables a user to create an account
+          required: true
+          schema:
+            type: object
+            required:
+              - access_token
+            properties:
+              access_token:
+                type: string
+                description: User facebook access token
+        responses:
+          "200":
+            description: OK
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  default: true
+                data:
+                  $ref: "#/definitions/User"
+                token:
+                  type: string
+                  description: JWT token to authenticate all other api requests.
+                message:
+                  type: string
+                  description: Congrats! You have successfully registered
+          default:
+            description: Error
+            schema:
+              $ref: "#/definitions/Error"
   /v1/login/:
     post:
       tags:

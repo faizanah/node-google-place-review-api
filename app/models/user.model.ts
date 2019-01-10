@@ -103,6 +103,7 @@ module.exports = function(sequelize, DataTypes) {
 
   User.associate = function(models) {
     User.hasMany(models.ReviewReport, { as: 'review_reports', foreignKey: 'userId', onDelete: 'cascade' })
+    User.hasMany(models.Identity, { as: 'identities', foreignKey: 'userId', onDelete: 'cascade' })
   }
 
   User.beforeSave((user, options) => {
