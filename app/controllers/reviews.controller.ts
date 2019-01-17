@@ -29,7 +29,7 @@ export class ReviewsController {
               contentType: req.files['attachment'][0].contentType,
               userId: req.user.id
             }
-            if (attachment.contentType.split('/')[0] === 'video') {
+            if (req.files['thumbnail'] && req.files['thumbnail'][0] && attachment.contentType.split('/')[0] === 'video') {
               const thumbnail = req.files['thumbnail'][0]
               params.include = {
                 include: [{
