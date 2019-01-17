@@ -29,7 +29,13 @@ export class UsersController {
     req.model('User').findOne(params)
   }
   reviews(req, res) {
-    params.condition = { where: { createdById: req.params.userId }, include: ['attachments'] }
+    params.condition = {
+      where: { createdById: req.params.userId }, include: [{
+        model: req.db['Attachment'],
+        as: 'attachments',
+        include: ['thumbnails']
+      }]
+    }
     req.model('Review').findAll(params)
   }
   attachments(req, res) {
@@ -37,5 +43,3 @@ export class UsersController {
     req.model('Attachment').findAll(params)
   }
 }
-
-
