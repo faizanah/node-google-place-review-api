@@ -165,7 +165,6 @@ gulp.task("prod", [PROD_BUILD], function() {
       ext: "ts js json html yaml",
       script: "build/server.js",
       watch: ["app/*", "test/*", "docs/*"],
-      tasks: [PROD_BUILD],
-      nodeArgs: ['--inspect']
+      tasks: [PROD_BUILD]
   });
 });
