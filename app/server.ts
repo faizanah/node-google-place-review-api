@@ -37,7 +37,12 @@ export class Server {
     this.app.use(bodyParser.urlencoded({ extended: true }))
     this.app.use(expressValidator())
     this.app.use(cookieParser())
-    this.app.use(session({ secret: ENV.secret }))
+    this.app.use(session({
+      secret: ENV.secret,
+      cookie: { maxAge: 1800 },
+      saveUninitialized: true,
+      resave: 'true'
+    }))
     this.app.use(flash())
     this.app.set('views', path.join(__dirname, '../', 'views'))
     this.app.use(express.static(path.join(__dirname, '../', 'public')))
