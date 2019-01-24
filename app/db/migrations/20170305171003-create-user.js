@@ -49,5 +49,7 @@ module.exports = {
         }
       })
     ,
-    down: (queryInterface, Sequelize) => queryInterface.dropTable('users')
+    down: (queryInterface, Sequelize) => {
+      return queryInterface.dropTable('users');
+    }
 }

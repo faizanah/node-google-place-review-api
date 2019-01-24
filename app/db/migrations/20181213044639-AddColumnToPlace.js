@@ -1,6 +1,6 @@
 'use strict'
 module.exports = {
-  up: (queryInterface, Sequelize) = > {
+  up: (queryInterface, Sequelize) => {
     return [
       queryInterface.addColumn('places', 'name', Sequelize.STRING(512)),
       queryInterface.addColumn('places', 'address', Sequelize.STRING(512)),
