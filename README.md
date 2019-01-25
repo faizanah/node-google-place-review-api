@@ -32,7 +32,7 @@
 * [Sequelize] -  In addition, we're going to use Sequelize, which is a database [ORM][9] that will interface with the **MySQL**, **PostgreSQL**, **SQLite**, and **MariaDB** databases for us.
 
 ## Relational Schema
-![divider](app/db/relational-schemas/26-12-2018-schema.png)
+![divider](app/db/relational-schemas/25-01-2019-schema.png)
 ## Introduction
 
 Our app directory consists on the following folders
