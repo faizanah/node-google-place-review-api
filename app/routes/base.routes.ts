@@ -33,6 +33,14 @@ export function initRoutes(app, router) {
     res.render('forgot', {
     })
   })
+  router.get('/privacy_and_policy', function(req, res) {
+    res.render('privacy_and_policy', {
+    })
+  })
+  router.get('/term_and_conditions', function(req, res) {
+    res.render('term_and_conditions', {
+    })
+  })
   router.post('/forgot', function(req, res, next) {
     let params = {condition: { where: { email: req.body.email } } }
     return req.model('User').findOne(params, (user) => {
