@@ -1691,3 +1691,6 @@
   margin-left: 15px !important;
   content: 'IMFO' !important;
 }
+.swagger-ui .opblock.opblock-patch .opblock-summary-method {
+    background: #6F6594 !important;
+}
