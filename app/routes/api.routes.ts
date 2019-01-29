@@ -6,7 +6,10 @@ export function initRoutes(app, router) {
   winston.log('info', '--> Initialisations the routes')
   let apiRoute = router
   // apiRoute.get('/', (req, res) => res.status(200).send({message: 'Api Server is running!'}))
-  apiRoute.use('/', swagger, swaggerDocs)
+  apiRoute.get('/', (req, res) => {
+    return res.redirect('/docs')
+  })
+  apiRoute.use('/docs', swagger, swaggerDocs)
   apiRoute.post('/v1/login', controller.session.login)
   apiRoute.post('/v1/signup/', controller.registration.signup)
   apiRoute.post('/v1/password/reset', controller.password.create)
