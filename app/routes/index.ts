@@ -6,7 +6,7 @@ import * as express from 'express'
 
 export class Routes {
   public init(app): void {
-    // app.use(subdomain('api', apiRoutes.initRoutes(app, express.Router())))
+    app.use(subdomain('api', apiRoutes.initRoutes(app, express.Router())))
     app.use(base.initRoutes(app, express.Router()))
     app.use(apiRoutes.initRoutes(app, express.Router()))
     // app.use(subdomain('admin', adminRoutes.initRoutes(app, express.Router())))
