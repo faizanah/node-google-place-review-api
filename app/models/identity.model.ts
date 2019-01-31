@@ -1,5 +1,6 @@
 'use strict'
 import db from './'
+import * as rs from '../helper/randomString'
 module.exports = (sequelize, DataTypes) => {
   const Identity = sequelize.define('Identity', {
     id: {
@@ -33,8 +34,9 @@ module.exports = (sequelize, DataTypes) => {
     const params = {
       where: { email: email },
       defaults: {
+        avatar: ((_auth['photos'] && _auth['photos']) ? _auth['photos'][0].value : ''),
         fullName: json.first_name + ' ' + json.last_name,
-        password: '1234sadsadsabad@s;aabhdiubuqeizxcv',
+        password: rs.randomString(),
         status: 'active'
       }
     }
